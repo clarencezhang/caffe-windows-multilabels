@@ -1,0 +1,197 @@
+
+D:\caffe-windows\caffe-windows\examples\mnist>copy ..\\..\\bin\\MainCaller.exe ..\\..\\bin\\test_net
+.exe
+        1 file(s) copied.
+
+D:\caffe-windows\caffe-windows\examples\mnist>SET GLOG_logtostderr=1
+
+D:\caffe-windows\caffe-windows\examples\mnist>"../../bin/test_net.exe" lenet_test.prototxt lenet_ite
+r_10000 100 CPU
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+E1030 20:56:45.706096 18188 test_net.cpp:40] Using CPU
+I1030 20:56:45.789101 18188 net.cpp:64] Memory required for Data0
+I1030 20:56:45.789101 18188 net.cpp:75] Creating Layer mnist
+I1030 20:56:45.790102 18188 net.cpp:111] mnist -> data
+I1030 20:56:45.790102 18188 net.cpp:111] mnist -> label
+I1030 20:56:45.790102 18188 data_layer.cpp:148] Opening leveldb mnist-test-leveldb
+I1030 20:56:46.017114 18188 data_layer.cpp:191] output data size: 100,1,28,28
+I1030 20:56:46.018115 18188 data_layer.cpp:231] Initializing prefetch
+I1030 20:56:46.036115 18188 data_layer.cpp:233] Prefetch initialized.
+I1030 20:56:46.036115 18188 net.cpp:126] Top shape: 100 1 28 28 (78400)
+I1030 20:56:46.036115 18188 net.cpp:126] Top shape: 100 1 1 1 (100)
+I1030 20:56:46.037116 18188 net.cpp:134] Memory  required for Data 314000
+I1030 20:56:46.037116 18188 net.cpp:157] mnist does not need backward computation.
+I1030 20:56:46.037116 18188 net.cpp:75] Creating Layer conv1
+I1030 20:56:46.038115 18188 net.cpp:85] conv1 <- data
+I1030 20:56:46.038115 18188 net.cpp:111] conv1 -> conv1
+I1030 20:56:46.039115 18188 net.cpp:126] Top shape: 100 20 24 24 (1152000)
+I1030 20:56:46.039115 18188 net.cpp:134] Memory  required for Data 4922000
+I1030 20:56:46.039115 18188 net.cpp:152] conv1 needs backward computation.
+I1030 20:56:46.041116 18188 net.cpp:75] Creating Layer pool1
+I1030 20:56:46.041116 18188 net.cpp:85] pool1 <- conv1
+I1030 20:56:46.045116 18188 net.cpp:111] pool1 -> pool1
+I1030 20:56:46.048116 18188 net.cpp:126] Top shape: 100 20 12 12 (288000)
+I1030 20:56:46.049116 18188 net.cpp:134] Memory  required for Data 6074000
+I1030 20:56:46.052116 18188 net.cpp:152] pool1 needs backward computation.
+I1030 20:56:46.053117 18188 net.cpp:75] Creating Layer conv2
+I1030 20:56:46.054116 18188 net.cpp:85] conv2 <- pool1
+I1030 20:56:46.055116 18188 net.cpp:111] conv2 -> conv2
+I1030 20:56:46.062118 18188 net.cpp:126] Top shape: 100 50 8 8 (320000)
+I1030 20:56:46.063117 18188 net.cpp:134] Memory  required for Data 7354000
+I1030 20:56:46.064117 18188 net.cpp:152] conv2 needs backward computation.
+I1030 20:56:46.065117 18188 net.cpp:75] Creating Layer pool2
+I1030 20:56:46.066118 18188 net.cpp:85] pool2 <- conv2
+I1030 20:56:46.068117 18188 net.cpp:111] pool2 -> pool2
+I1030 20:56:46.069118 18188 net.cpp:126] Top shape: 100 50 4 4 (80000)
+I1030 20:56:46.069118 18188 net.cpp:134] Memory  required for Data 7674000
+I1030 20:56:46.070117 18188 net.cpp:152] pool2 needs backward computation.
+I1030 20:56:46.071117 18188 net.cpp:75] Creating Layer ip1
+I1030 20:56:46.072118 18188 net.cpp:85] ip1 <- pool2
+I1030 20:56:46.073117 18188 net.cpp:111] ip1 -> ip1
+I1030 20:56:46.129122 18188 net.cpp:126] Top shape: 100 500 1 1 (50000)
+I1030 20:56:46.130121 18188 net.cpp:134] Memory  required for Data 7874000
+I1030 20:56:46.130121 18188 net.cpp:152] ip1 needs backward computation.
+I1030 20:56:46.131121 18188 net.cpp:75] Creating Layer relu1
+I1030 20:56:46.132122 18188 net.cpp:85] relu1 <- ip1
+I1030 20:56:46.132122 18188 net.cpp:99] relu1 -> ip1 (in-place)
+I1030 20:56:46.133121 18188 net.cpp:126] Top shape: 100 500 1 1 (50000)
+I1030 20:56:46.133121 18188 net.cpp:134] Memory  required for Data 7874000
+I1030 20:56:46.134121 18188 net.cpp:152] relu1 needs backward computation.
+I1030 20:56:46.135121 18188 net.cpp:75] Creating Layer ip2
+I1030 20:56:46.136121 18188 net.cpp:85] ip2 <- ip1
+I1030 20:56:46.137121 18188 net.cpp:111] ip2 -> ip2
+I1030 20:56:46.138121 18188 net.cpp:126] Top shape: 100 10 1 1 (1000)
+I1030 20:56:46.138121 18188 net.cpp:134] Memory  required for Data 7878000
+I1030 20:56:46.139122 18188 net.cpp:152] ip2 needs backward computation.
+I1030 20:56:46.139122 18188 net.cpp:75] Creating Layer prob
+I1030 20:56:46.140121 18188 net.cpp:85] prob <- ip2
+I1030 20:56:46.141121 18188 net.cpp:111] prob -> prob
+I1030 20:56:46.142122 18188 net.cpp:126] Top shape: 100 10 1 1 (1000)
+I1030 20:56:46.143121 18188 net.cpp:134] Memory  required for Data 7882000
+I1030 20:56:46.143121 18188 net.cpp:152] prob needs backward computation.
+I1030 20:56:46.144121 18188 net.cpp:75] Creating Layer accuracy
+I1030 20:56:46.144121 18188 net.cpp:85] accuracy <- prob
+I1030 20:56:46.145122 18188 net.cpp:85] accuracy <- label
+I1030 20:56:46.146122 18188 net.cpp:111] accuracy -> accuracy
+I1030 20:56:46.146122 18188 net.cpp:126] Top shape: 1 2 1 1 (2)
+I1030 20:56:46.147122 18188 net.cpp:134] Memory  required for Data 7882008
+I1030 20:56:46.147122 18188 net.cpp:152] accuracy needs backward computation.
+I1030 20:56:46.148123 18188 net.cpp:163] This network produces output accuracy
+I1030 20:56:46.148123 18188 net.cpp:181] Collecting Learning Rate and Weight Decay.
+I1030 20:56:46.149122 18188 net.cpp:174] Network initialization done.
+I1030 20:56:46.149122 18188 net.cpp:175] Memory required for Data 7882008
+I1030 20:56:46.213125 18188 net.cpp:319] Copying source layer mnist
+I1030 20:56:46.213125 18188 net.cpp:319] Copying source layer conv1
+I1030 20:56:46.214125 18188 net.cpp:319] Copying source layer pool1
+I1030 20:56:46.215126 18188 net.cpp:319] Copying source layer conv2
+I1030 20:56:46.217126 18188 net.cpp:319] Copying source layer pool2
+I1030 20:56:46.217126 18188 net.cpp:319] Copying source layer ip1
+I1030 20:56:46.236127 18188 net.cpp:319] Copying source layer relu1
+I1030 20:56:46.236127 18188 net.cpp:319] Copying source layer ip2
+I1030 20:56:46.237128 18188 net.cpp:316] Ignoring source layer loss
+E1030 20:56:46.238127 18188 test_net.cpp:48] Running 100 iterations.
+E1030 20:56:46.480141 18188 test_net.cpp:54] Batch 0, accuracy: 1
+E1030 20:56:46.681152 18188 test_net.cpp:54] Batch 1, accuracy: 1
+E1030 20:56:46.877163 18188 test_net.cpp:54] Batch 2, accuracy: 0.99
+E1030 20:56:47.135179 18188 test_net.cpp:54] Batch 3, accuracy: 0.99
+E1030 20:56:47.339190 18188 test_net.cpp:54] Batch 4, accuracy: 0.99
+E1030 20:56:47.537201 18188 test_net.cpp:54] Batch 5, accuracy: 0.99
+E1030 20:56:47.744213 18188 test_net.cpp:54] Batch 6, accuracy: 0.97
+E1030 20:56:48.065232 18188 test_net.cpp:54] Batch 7, accuracy: 0.99
+E1030 20:56:48.327246 18188 test_net.cpp:54] Batch 8, accuracy: 1
+E1030 20:56:48.560261 18188 test_net.cpp:54] Batch 9, accuracy: 0.98
+E1030 20:56:48.759271 18188 test_net.cpp:54] Batch 10, accuracy: 0.98
+E1030 20:56:48.960283 18188 test_net.cpp:54] Batch 11, accuracy: 0.98
+E1030 20:56:49.173295 18188 test_net.cpp:54] Batch 12, accuracy: 0.97
+E1030 20:56:49.381307 18188 test_net.cpp:54] Batch 13, accuracy: 0.98
+E1030 20:56:49.581318 18188 test_net.cpp:54] Batch 14, accuracy: 1
+E1030 20:56:49.796330 18188 test_net.cpp:54] Batch 15, accuracy: 0.98
+E1030 20:56:49.986341 18188 test_net.cpp:54] Batch 16, accuracy: 0.97
+E1030 20:56:50.179352 18188 test_net.cpp:54] Batch 17, accuracy: 0.98
+E1030 20:56:50.382364 18188 test_net.cpp:54] Batch 18, accuracy: 0.99
+E1030 20:56:50.598376 18188 test_net.cpp:54] Batch 19, accuracy: 0.99
+E1030 20:56:50.802388 18188 test_net.cpp:54] Batch 20, accuracy: 0.98
+E1030 20:56:51.117406 18188 test_net.cpp:54] Batch 21, accuracy: 0.97
+E1030 20:56:51.384421 18188 test_net.cpp:54] Batch 22, accuracy: 0.99
+E1030 20:56:51.581432 18188 test_net.cpp:54] Batch 23, accuracy: 0.98
+E1030 20:56:51.787444 18188 test_net.cpp:54] Batch 24, accuracy: 0.98
+E1030 20:56:51.974455 18188 test_net.cpp:54] Batch 25, accuracy: 0.99
+E1030 20:56:52.162467 18188 test_net.cpp:54] Batch 26, accuracy: 0.99
+E1030 20:56:52.401479 18188 test_net.cpp:54] Batch 27, accuracy: 1
+E1030 20:56:52.671495 18188 test_net.cpp:54] Batch 28, accuracy: 0.98
+E1030 20:56:52.877507 18188 test_net.cpp:54] Batch 29, accuracy: 0.96
+E1030 20:56:53.070518 18188 test_net.cpp:54] Batch 30, accuracy: 0.99
+E1030 20:56:53.304532 18188 test_net.cpp:54] Batch 31, accuracy: 1
+E1030 20:56:53.490542 18188 test_net.cpp:54] Batch 32, accuracy: 0.99
+E1030 20:56:53.680553 18188 test_net.cpp:54] Batch 33, accuracy: 1
+E1030 20:56:53.875565 18188 test_net.cpp:54] Batch 34, accuracy: 0.98
+E1030 20:56:54.185581 18188 test_net.cpp:54] Batch 35, accuracy: 0.95
+E1030 20:56:54.441596 18188 test_net.cpp:54] Batch 36, accuracy: 1
+E1030 20:56:54.631608 18188 test_net.cpp:54] Batch 37, accuracy: 0.98
+E1030 20:56:54.829618 18188 test_net.cpp:54] Batch 38, accuracy: 0.99
+E1030 20:56:55.007628 18188 test_net.cpp:54] Batch 39, accuracy: 1
+E1030 20:56:55.357648 18188 test_net.cpp:54] Batch 40, accuracy: 0.99
+E1030 20:56:55.556660 18188 test_net.cpp:54] Batch 41, accuracy: 0.98
+E1030 20:56:55.746671 18188 test_net.cpp:54] Batch 42, accuracy: 0.98
+E1030 20:56:55.943682 18188 test_net.cpp:54] Batch 43, accuracy: 1
+E1030 20:56:56.135694 18188 test_net.cpp:54] Batch 44, accuracy: 1
+E1030 20:56:56.360707 18188 test_net.cpp:54] Batch 45, accuracy: 0.98
+E1030 20:56:56.541717 18188 test_net.cpp:54] Batch 46, accuracy: 1
+E1030 20:56:56.733727 18188 test_net.cpp:54] Batch 47, accuracy: 0.98
+E1030 20:56:56.976742 18188 test_net.cpp:54] Batch 48, accuracy: 0.95
+E1030 20:56:57.259757 18188 test_net.cpp:54] Batch 49, accuracy: 1
+E1030 20:56:57.509773 18188 test_net.cpp:54] Batch 50, accuracy: 1
+E1030 20:56:57.706784 18188 test_net.cpp:54] Batch 51, accuracy: 1
+E1030 20:56:57.889793 18188 test_net.cpp:54] Batch 52, accuracy: 0.99
+E1030 20:56:58.087805 18188 test_net.cpp:54] Batch 53, accuracy: 1
+E1030 20:56:58.374821 18188 test_net.cpp:54] Batch 54, accuracy: 1
+E1030 20:56:58.570832 18188 test_net.cpp:54] Batch 55, accuracy: 1
+E1030 20:56:58.754843 18188 test_net.cpp:54] Batch 56, accuracy: 1
+E1030 20:56:58.958854 18188 test_net.cpp:54] Batch 57, accuracy: 1
+E1030 20:56:59.159867 18188 test_net.cpp:54] Batch 58, accuracy: 1
+E1030 20:56:59.385879 18188 test_net.cpp:54] Batch 59, accuracy: 0.98
+E1030 20:56:59.580890 18188 test_net.cpp:54] Batch 60, accuracy: 1
+E1030 20:56:59.777901 18188 test_net.cpp:54] Batch 61, accuracy: 1
+E1030 20:57:00.144922 18188 test_net.cpp:54] Batch 62, accuracy: 1
+E1030 20:57:00.448940 18188 test_net.cpp:54] Batch 63, accuracy: 1
+E1030 20:57:00.652951 18188 test_net.cpp:54] Batch 64, accuracy: 1
+E1030 20:57:00.866964 18188 test_net.cpp:54] Batch 65, accuracy: 0.93
+E1030 20:57:01.079977 18188 test_net.cpp:54] Batch 66, accuracy: 0.98
+E1030 20:57:01.288988 18188 test_net.cpp:54] Batch 67, accuracy: 0.99
+E1030 20:57:01.513000 18188 test_net.cpp:54] Batch 68, accuracy: 1
+E1030 20:57:01.716012 18188 test_net.cpp:54] Batch 69, accuracy: 1
+E1030 20:57:01.935025 18188 test_net.cpp:54] Batch 70, accuracy: 1
+E1030 20:57:02.159037 18188 test_net.cpp:54] Batch 71, accuracy: 1
+E1030 20:57:02.399051 18188 test_net.cpp:54] Batch 72, accuracy: 1
+E1030 20:57:02.596062 18188 test_net.cpp:54] Batch 73, accuracy: 1
+E1030 20:57:02.804075 18188 test_net.cpp:54] Batch 74, accuracy: 1
+E1030 20:57:03.074090 18188 test_net.cpp:54] Batch 75, accuracy: 1
+E1030 20:57:03.382107 18188 test_net.cpp:54] Batch 76, accuracy: 1
+E1030 20:57:03.597121 18188 test_net.cpp:54] Batch 77, accuracy: 1
+E1030 20:57:03.792131 18188 test_net.cpp:54] Batch 78, accuracy: 1
+E1030 20:57:03.973141 18188 test_net.cpp:54] Batch 79, accuracy: 1
+E1030 20:57:04.154152 18188 test_net.cpp:54] Batch 80, accuracy: 1
+E1030 20:57:04.358163 18188 test_net.cpp:54] Batch 81, accuracy: 1
+E1030 20:57:04.555174 18188 test_net.cpp:54] Batch 82, accuracy: 1
+E1030 20:57:04.752187 18188 test_net.cpp:54] Batch 83, accuracy: 0.98
+E1030 20:57:05.048203 18188 test_net.cpp:54] Batch 84, accuracy: 0.99
+E1030 20:57:05.251214 18188 test_net.cpp:54] Batch 85, accuracy: 0.99
+E1030 20:57:05.466228 18188 test_net.cpp:54] Batch 86, accuracy: 1
+E1030 20:57:05.642237 18188 test_net.cpp:54] Batch 87, accuracy: 1
+E1030 20:57:05.840248 18188 test_net.cpp:54] Batch 88, accuracy: 1
+E1030 20:57:06.114264 18188 test_net.cpp:54] Batch 89, accuracy: 1
+E1030 20:57:06.355278 18188 test_net.cpp:54] Batch 90, accuracy: 0.97
+E1030 20:57:06.566290 18188 test_net.cpp:54] Batch 91, accuracy: 1
+E1030 20:57:06.753300 18188 test_net.cpp:54] Batch 92, accuracy: 1
+E1030 20:57:06.958312 18188 test_net.cpp:54] Batch 93, accuracy: 1
+E1030 20:57:07.150323 18188 test_net.cpp:54] Batch 94, accuracy: 1
+E1030 20:57:07.331333 18188 test_net.cpp:54] Batch 95, accuracy: 1
+E1030 20:57:07.536345 18188 test_net.cpp:54] Batch 96, accuracy: 0.97
+E1030 20:57:07.745357 18188 test_net.cpp:54] Batch 97, accuracy: 0.97
+I1030 20:57:07.753357 18316 data_layer.cpp:119] Restarting data prefetching from start.
+E1030 20:57:07.953369 18188 test_net.cpp:54] Batch 98, accuracy: 1
+E1030 20:57:08.157382 18188 test_net.cpp:54] Batch 99, accuracy: 1
+E1030 20:57:08.157382 18188 test_net.cpp:57] Test accuracy: 0.9902
+
+D:\caffe-windows\caffe-windows\examples\mnist>pause
+Press any key to continue . . .

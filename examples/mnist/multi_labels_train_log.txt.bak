@@ -1,0 +1,724 @@
+
+D:\caffe-windows\caffe-windows\examples\mnist>#copy ..\\..\\bin\\MainCaller.exe ..\\..\\bin\\train_n
+et_multi_labels.exe
+'#copy' is not recognized as an internal or external command,
+operable program or batch file.
+
+D:\caffe-windows\caffe-windows\examples\mnist>SET GLOG_logtostderr=1
+
+D:\caffe-windows\caffe-windows\examples\mnist>"../../bin/train_net_multi_labels.exe" lenet_solver.pr
+ototxt
+I1208 08:21:23.895898  7144 train_net.cpp:32] Starting Optimization
+I1208 08:21:23.897898  7144 solver.cpp:42] Creating training net.
+I1208 08:21:23.914899  7144 net.cpp:67] Memory required for Data0
+I1208 08:21:23.915899  7144 net.cpp:81] Creating Layer mnist
+I1208 08:21:23.915899  7144 net.cpp:120] mnist -> data
+I1208 08:21:23.916899  7144 net.cpp:120] mnist -> label
+I1208 08:21:23.916899  7144 data_layer.cpp:204] Opening leveldb mnist-train-leveldb-multilabel
+I1208 08:21:24.079107  7144 data_layer.cpp:254] output data size: 64,1,28,28
+I1208 08:21:24.080106  7144 data_layer.cpp:309] Initializing prefetch
+I1208 08:21:25.595172  7144 data_layer.cpp:311] Prefetch initialized.
+I1208 08:21:25.596173  7144 net.cpp:136] Top shape: 64 1 28 28 (50176)
+I1208 08:21:25.596173  7144 net.cpp:136] Top shape: 64 10 1 1 (640)
+I1208 08:21:25.596173  7144 net.cpp:144] Memory  required for Data 203264
+I1208 08:21:25.596173  7144 net.cpp:172] mnist does not need backward computation.
+I1208 08:21:25.597172  7144 net.cpp:81] Creating Layer conv1
+I1208 08:21:25.597172  7144 net.cpp:92] conv1 <- data
+I1208 08:21:25.597172  7144 net.cpp:120] conv1 -> conv1
+I1208 08:21:25.598172  7144 net.cpp:136] Top shape: 64 20 24 24 (737280)
+I1208 08:21:25.598172  7144 net.cpp:144] Memory  required for Data 3152384
+I1208 08:21:25.599172  7144 net.cpp:167] conv1 needs backward computation.
+I1208 08:21:25.600172  7144 net.cpp:81] Creating Layer pool1
+I1208 08:21:25.600172  7144 net.cpp:92] pool1 <- conv1
+I1208 08:21:25.601172  7144 net.cpp:120] pool1 -> pool1
+I1208 08:21:25.601172  7144 net.cpp:136] Top shape: 64 20 12 12 (184320)
+I1208 08:21:25.602172  7144 net.cpp:144] Memory  required for Data 3889664
+I1208 08:21:25.603173  7144 net.cpp:167] pool1 needs backward computation.
+I1208 08:21:25.603173  7144 net.cpp:81] Creating Layer conv2
+I1208 08:21:25.604172  7144 net.cpp:92] conv2 <- pool1
+I1208 08:21:25.605172  7144 net.cpp:120] conv2 -> conv2
+I1208 08:21:25.608172  7144 net.cpp:136] Top shape: 64 50 8 8 (204800)
+I1208 08:21:25.609172  7144 net.cpp:144] Memory  required for Data 4708864
+I1208 08:21:25.609172  7144 net.cpp:167] conv2 needs backward computation.
+I1208 08:21:25.609172  7144 net.cpp:81] Creating Layer pool2
+I1208 08:21:25.610172  7144 net.cpp:92] pool2 <- conv2
+I1208 08:21:25.611172  7144 net.cpp:120] pool2 -> pool2
+I1208 08:21:25.612172  7144 net.cpp:136] Top shape: 64 50 4 4 (51200)
+I1208 08:21:25.612172  7144 net.cpp:144] Memory  required for Data 4913664
+I1208 08:21:25.613173  7144 net.cpp:167] pool2 needs backward computation.
+I1208 08:21:25.613173  7144 net.cpp:81] Creating Layer ip1
+I1208 08:21:25.614173  7144 net.cpp:92] ip1 <- pool2
+I1208 08:21:25.615173  7144 net.cpp:120] ip1 -> ip1
+I1208 08:21:25.663374  7144 net.cpp:136] Top shape: 64 500 1 1 (32000)
+I1208 08:21:25.664374  7144 net.cpp:144] Memory  required for Data 5041664
+I1208 08:21:25.665374  7144 net.cpp:167] ip1 needs backward computation.
+I1208 08:21:25.666374  7144 net.cpp:81] Creating Layer relu1
+I1208 08:21:25.666374  7144 net.cpp:92] relu1 <- ip1
+I1208 08:21:25.667374  7144 net.cpp:108] relu1 -> ip1 (in-place)
+I1208 08:21:25.668375  7144 net.cpp:136] Top shape: 64 500 1 1 (32000)
+I1208 08:21:25.668375  7144 net.cpp:144] Memory  required for Data 5041664
+I1208 08:21:25.669374  7144 net.cpp:167] relu1 needs backward computation.
+I1208 08:21:25.669374  7144 net.cpp:81] Creating Layer ip2
+I1208 08:21:25.670374  7144 net.cpp:92] ip2 <- ip1
+I1208 08:21:25.670374  7144 net.cpp:120] ip2 -> ip2
+I1208 08:21:25.672374  7144 net.cpp:136] Top shape: 64 10 1 1 (640)
+I1208 08:21:25.672374  7144 net.cpp:144] Memory  required for Data 5044224
+I1208 08:21:25.673374  7144 net.cpp:167] ip2 needs backward computation.
+I1208 08:21:25.673374  7144 net.cpp:81] Creating Layer loss
+I1208 08:21:25.674374  7144 net.cpp:92] loss <- ip2
+I1208 08:21:25.674374  7144 net.cpp:92] loss <- label
+I1208 08:21:25.675374  7144 net.cpp:144] Memory  required for Data 5044224
+I1208 08:21:25.676374  7144 net.cpp:167] loss needs backward computation.
+I1208 08:21:25.676374  7144 net.cpp:201] Collecting Learning Rate and Weight Decay.
+I1208 08:21:25.676374  7144 net.cpp:194] Network initialization done.
+I1208 08:21:25.677374  7144 net.cpp:195] Memory required for Data 5044224
+
+I1208 08:21:25.678375  7144 solver.cpp:46] Creating testing net.
+I1208 08:21:25.693375  7144 net.cpp:67] Memory required for Data0
+I1208 08:21:25.693375  7144 net.cpp:81] Creating Layer mnist
+I1208 08:21:25.694375  7144 net.cpp:120] mnist -> data
+I1208 08:21:25.695376  7144 net.cpp:120] mnist -> label
+I1208 08:21:25.695376  7144 data_layer.cpp:204] Opening leveldb mnist-test-leveldb-multilabel
+I1208 08:21:25.810981  7144 data_layer.cpp:254] output data size: 100,1,28,28
+I1208 08:21:25.810981  7144 data_layer.cpp:309] Initializing prefetch
+I1208 08:21:25.810981  7144 data_layer.cpp:311] Prefetch initialized.
+I1208 08:21:25.810981  7144 net.cpp:136] Top shape: 100 1 28 28 (78400)
+I1208 08:21:25.810981  7144 net.cpp:136] Top shape: 100 10 1 1 (1000)
+I1208 08:21:25.810981  7144 net.cpp:144] Memory  required for Data 317600
+I1208 08:21:25.810981  7144 net.cpp:172] mnist does not need backward computation.
+I1208 08:21:25.810981  7144 net.cpp:81] Creating Layer conv1
+I1208 08:21:25.810981  7144 net.cpp:92] conv1 <- data
+I1208 08:21:25.810981  7144 net.cpp:120] conv1 -> conv1
+I1208 08:21:25.810981  7144 net.cpp:136] Top shape: 100 20 24 24 (1152000)
+I1208 08:21:25.810981  7144 net.cpp:144] Memory  required for Data 4925600
+I1208 08:21:25.810981  7144 net.cpp:167] conv1 needs backward computation.
+I1208 08:21:25.810981  7144 net.cpp:81] Creating Layer pool1
+I1208 08:21:25.810981  7144 net.cpp:92] pool1 <- conv1
+I1208 08:21:25.810981  7144 net.cpp:120] pool1 -> pool1
+I1208 08:21:25.810981  7144 net.cpp:136] Top shape: 100 20 12 12 (288000)
+I1208 08:21:25.810981  7144 net.cpp:144] Memory  required for Data 6077600
+I1208 08:21:25.810981  7144 net.cpp:167] pool1 needs backward computation.
+I1208 08:21:25.810981  7144 net.cpp:81] Creating Layer conv2
+I1208 08:21:25.810981  7144 net.cpp:92] conv2 <- pool1
+I1208 08:21:25.826581  7144 net.cpp:120] conv2 -> conv2
+I1208 08:21:25.826581  7144 net.cpp:136] Top shape: 100 50 8 8 (320000)
+I1208 08:21:25.826581  7144 net.cpp:144] Memory  required for Data 7357600
+I1208 08:21:25.826581  7144 net.cpp:167] conv2 needs backward computation.
+I1208 08:21:25.826581  7144 net.cpp:81] Creating Layer pool2
+I1208 08:21:25.826581  7144 net.cpp:92] pool2 <- conv2
+I1208 08:21:25.826581  7144 net.cpp:120] pool2 -> pool2
+I1208 08:21:25.826581  7144 net.cpp:136] Top shape: 100 50 4 4 (80000)
+I1208 08:21:25.826581  7144 net.cpp:144] Memory  required for Data 7677600
+I1208 08:21:25.826581  7144 net.cpp:167] pool2 needs backward computation.
+I1208 08:21:25.842181  7144 net.cpp:81] Creating Layer ip1
+I1208 08:21:25.843181  7144 net.cpp:92] ip1 <- pool2
+I1208 08:21:25.843181  7144 net.cpp:120] ip1 -> ip1
+I1208 08:21:25.891185  7144 net.cpp:136] Top shape: 100 500 1 1 (50000)
+I1208 08:21:25.892184  7144 net.cpp:144] Memory  required for Data 7877600
+I1208 08:21:25.892184  7144 net.cpp:167] ip1 needs backward computation.
+I1208 08:21:25.893184  7144 net.cpp:81] Creating Layer relu1
+I1208 08:21:25.894184  7144 net.cpp:92] relu1 <- ip1
+I1208 08:21:25.894184  7144 net.cpp:108] relu1 -> ip1 (in-place)
+I1208 08:21:25.895184  7144 net.cpp:136] Top shape: 100 500 1 1 (50000)
+I1208 08:21:25.895184  7144 net.cpp:144] Memory  required for Data 7877600
+I1208 08:21:25.896184  7144 net.cpp:167] relu1 needs backward computation.
+I1208 08:21:25.897184  7144 net.cpp:81] Creating Layer ip2
+I1208 08:21:25.897184  7144 net.cpp:92] ip2 <- ip1
+I1208 08:21:25.898185  7144 net.cpp:120] ip2 -> ip2
+I1208 08:21:25.899185  7144 net.cpp:136] Top shape: 100 10 1 1 (1000)
+I1208 08:21:25.899185  7144 net.cpp:144] Memory  required for Data 7881600
+I1208 08:21:25.900185  7144 net.cpp:167] ip2 needs backward computation.
+I1208 08:21:25.901185  7144 net.cpp:81] Creating Layer prob
+I1208 08:21:25.901185  7144 net.cpp:92] prob <- ip2
+I1208 08:21:25.902185  7144 net.cpp:120] prob -> prob
+I1208 08:21:25.902185  7144 net.cpp:136] Top shape: 100 10 1 1 (1000)
+I1208 08:21:25.903185  7144 net.cpp:144] Memory  required for Data 7885600
+I1208 08:21:25.904186  7144 net.cpp:167] prob needs backward computation.
+I1208 08:21:25.904186  7144 net.cpp:81] Creating Layer accuracy
+I1208 08:21:25.905185  7144 net.cpp:92] accuracy <- prob
+I1208 08:21:25.905185  7144 net.cpp:92] accuracy <- label
+I1208 08:21:25.906185  7144 net.cpp:120] accuracy -> accuracy
+I1208 08:21:25.907186  7144 net.cpp:136] Top shape: 1 2 1 1 (2)
+I1208 08:21:25.907186  7144 net.cpp:144] Memory  required for Data 7885608
+I1208 08:21:25.908185  7144 net.cpp:167] accuracy needs backward computation.
+I1208 08:21:25.908185  7144 net.cpp:179] This network produces output accuracy
+I1208 08:21:25.910186  7144 net.cpp:201] Collecting Learning Rate and Weight Decay.
+I1208 08:21:25.910186  7144 net.cpp:194] Network initialization done.
+I1208 08:21:25.911185  7144 net.cpp:195] Memory required for Data 7885608
+I1208 08:21:25.912185  7144 solver.cpp:51] Solver scaffolding done.
+I1208 08:21:25.912185  7144 solver.cpp:63] Solving LeNet
+I1208 08:21:25.913185  7144 solver.cpp:108] Iteration 0, Testing net
+I1208 08:21:25.913185  7144 net.cpp:328] Copying source layer mnist
+I1208 08:21:25.914186  7144 net.cpp:328] Copying source layer conv1
+I1208 08:21:25.914186  7144 net.cpp:328] Copying source layer pool1
+I1208 08:21:25.915186  7144 net.cpp:328] Copying source layer conv2
+I1208 08:21:25.916187  7144 net.cpp:328] Copying source layer pool2
+I1208 08:21:25.916187  7144 net.cpp:328] Copying source layer ip1
+I1208 08:21:25.918186  7144 net.cpp:328] Copying source layer relu1
+I1208 08:21:25.919186  7144 net.cpp:328] Copying source layer ip2
+I1208 08:21:25.920186  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:21:46.078891  4396 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:21:46.472507  7144 solver.cpp:144] Test score #0: 0.1073
+I1208 08:21:46.473507  7144 solver.cpp:144] Test score #1: 2.30211
+I1208 08:22:20.412081  7144 solver.cpp:249] Iteration 100, lr = 0.00992565
+I1208 08:22:20.416081  7144 solver.cpp:89] Iteration 100, loss = 0.220119
+I1208 08:22:53.991056  7144 solver.cpp:249] Iteration 200, lr = 0.00985258
+I1208 08:22:53.994056  7144 solver.cpp:89] Iteration 200, loss = 0.385072
+I1208 08:23:26.451602  7144 solver.cpp:249] Iteration 300, lr = 0.00978075
+I1208 08:23:26.454602  7144 solver.cpp:89] Iteration 300, loss = 0.132089
+I1208 08:23:58.535773  7144 solver.cpp:249] Iteration 400, lr = 0.00971013
+I1208 08:23:58.535773  7144 solver.cpp:89] Iteration 400, loss = 0.272566
+I1208 08:24:30.867060  7144 solver.cpp:249] Iteration 500, lr = 0.00964069
+I1208 08:24:30.870060  7144 solver.cpp:89] Iteration 500, loss = 0.154221
+I1208 08:24:30.871060  7144 solver.cpp:108] Iteration 500, Testing net
+I1208 08:24:30.872061  7144 net.cpp:328] Copying source layer mnist
+I1208 08:24:30.873060  7144 net.cpp:328] Copying source layer conv1
+I1208 08:24:30.873060  7144 net.cpp:328] Copying source layer pool1
+I1208 08:24:30.874060  7144 net.cpp:328] Copying source layer conv2
+I1208 08:24:30.875061  7144 net.cpp:328] Copying source layer pool2
+I1208 08:24:30.876060  7144 net.cpp:328] Copying source layer ip1
+I1208 08:24:30.876060  7144 net.cpp:328] Copying source layer relu1
+I1208 08:24:30.877060  7144 net.cpp:328] Copying source layer ip2
+I1208 08:24:30.878060  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:24:52.622062  7032 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:24:53.102486  7144 solver.cpp:144] Test score #0: 0.965
+I1208 08:24:53.103487  7144 solver.cpp:144] Test score #1: 0.108808
+I1208 08:24:53.105486  7144 net.cpp:399] Serializing 9 layers
+I1208 08:24:53.121487  7144 solver.cpp:163] Snapshotting to lenet_iter_500
+I1208 08:24:53.191491  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_500.solverstate
+I1208 08:25:24.788733  7144 solver.cpp:249] Iteration 600, lr = 0.0095724
+I1208 08:25:24.792733  7144 solver.cpp:89] Iteration 600, loss = 0.184962
+I1208 08:25:57.063781  7144 solver.cpp:249] Iteration 700, lr = 0.00950522
+I1208 08:25:57.066781  7144 solver.cpp:89] Iteration 700, loss = 0.0564647
+I1208 08:26:28.539822  7144 solver.cpp:249] Iteration 800, lr = 0.00943913
+I1208 08:26:28.543823  7144 solver.cpp:89] Iteration 800, loss = 0.0691736
+I1208 08:26:59.692457  7144 solver.cpp:249] Iteration 900, lr = 0.00937411
+I1208 08:26:59.695457  7144 solver.cpp:89] Iteration 900, loss = 0.0626616
+I1208 08:27:10.881657  4416 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:27:30.906880  7144 solver.cpp:249] Iteration 1000, lr = 0.00931012
+I1208 08:27:30.909880  7144 solver.cpp:89] Iteration 1000, loss = 0.0108665
+I1208 08:27:30.909880  7144 solver.cpp:108] Iteration 1000, Testing net
+I1208 08:27:30.910881  7144 net.cpp:328] Copying source layer mnist
+I1208 08:27:30.911880  7144 net.cpp:328] Copying source layer conv1
+I1208 08:27:30.911880  7144 net.cpp:328] Copying source layer pool1
+I1208 08:27:30.912880  7144 net.cpp:328] Copying source layer conv2
+I1208 08:27:30.912880  7144 net.cpp:328] Copying source layer pool2
+I1208 08:27:30.913880  7144 net.cpp:328] Copying source layer ip1
+I1208 08:27:30.913880  7144 net.cpp:328] Copying source layer relu1
+I1208 08:27:30.914880  7144 net.cpp:328] Copying source layer ip2
+I1208 08:27:30.915880  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:27:49.346253  3676 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:27:49.709873  7144 solver.cpp:144] Test score #0: 0.9795
+I1208 08:27:49.709873  7144 solver.cpp:144] Test score #1: 0.0614715
+I1208 08:27:49.711874  7144 net.cpp:399] Serializing 9 layers
+I1208 08:27:49.726874  7144 solver.cpp:163] Snapshotting to lenet_iter_1000
+I1208 08:27:50.078493  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_1000.solverstate
+
+I1208 08:28:20.898705  7144 solver.cpp:249] Iteration 1100, lr = 0.00924715
+I1208 08:28:20.902704  7144 solver.cpp:89] Iteration 1100, loss = 0.0442737
+I1208 08:28:51.936914  7144 solver.cpp:249] Iteration 1200, lr = 0.00918515
+I1208 08:28:51.939914  7144 solver.cpp:89] Iteration 1200, loss = 0.0916956
+I1208 08:29:22.766540  7144 solver.cpp:249] Iteration 1300, lr = 0.00912412
+I1208 08:29:22.770539  7144 solver.cpp:89] Iteration 1300, loss = 0.0689051
+I1208 08:29:53.531384  7144 solver.cpp:249] Iteration 1400, lr = 0.00906403
+I1208 08:29:53.534385  7144 solver.cpp:89] Iteration 1400, loss = 0.0333742
+I1208 08:30:24.503599  7144 solver.cpp:249] Iteration 1500, lr = 0.00900485
+I1208 08:30:24.506600  7144 solver.cpp:89] Iteration 1500, loss = 0.0624508
+I1208 08:30:24.506600  7144 solver.cpp:108] Iteration 1500, Testing net
+I1208 08:30:24.508600  7144 net.cpp:328] Copying source layer mnist
+I1208 08:30:24.509600  7144 net.cpp:328] Copying source layer conv1
+I1208 08:30:24.510601  7144 net.cpp:328] Copying source layer pool1
+I1208 08:30:24.511600  7144 net.cpp:328] Copying source layer conv2
+I1208 08:30:24.512600  7144 net.cpp:328] Copying source layer pool2
+I1208 08:30:24.512600  7144 net.cpp:328] Copying source layer ip1
+I1208 08:30:24.513600  7144 net.cpp:328] Copying source layer relu1
+I1208 08:30:24.514600  7144 net.cpp:328] Copying source layer ip2
+I1208 08:30:24.514600  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:30:42.988981  3256 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:30:43.348595  7144 solver.cpp:144] Test score #0: 0.9832
+I1208 08:30:43.348595  7144 solver.cpp:144] Test score #1: 0.0553806
+I1208 08:30:43.350595  7144 net.cpp:399] Serializing 9 layers
+I1208 08:30:43.365597  7144 solver.cpp:163] Snapshotting to lenet_iter_1500
+I1208 08:30:43.429600  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_1500.solverstate
+
+I1208 08:31:14.677826  7144 solver.cpp:249] Iteration 1600, lr = 0.00894657
+I1208 08:31:14.682826  7144 solver.cpp:89] Iteration 1600, loss = 0.0478247
+I1208 08:31:45.651847  7144 solver.cpp:249] Iteration 1700, lr = 0.00888916
+I1208 08:31:45.655848  7144 solver.cpp:89] Iteration 1700, loss = 0.00970973
+I1208 08:32:16.208245  7144 solver.cpp:249] Iteration 1800, lr = 0.0088326
+I1208 08:32:16.212246  7144 solver.cpp:89] Iteration 1800, loss = 0.0217421
+I1208 08:32:38.520021  5624 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:32:46.832048  7144 solver.cpp:249] Iteration 1900, lr = 0.00877687
+I1208 08:32:46.835048  7144 solver.cpp:89] Iteration 1900, loss = 0.0504384
+I1208 08:33:17.329460  7144 solver.cpp:249] Iteration 2000, lr = 0.00872196
+I1208 08:33:17.332460  7144 solver.cpp:89] Iteration 2000, loss = 0.101424
+I1208 08:33:17.333461  7144 solver.cpp:108] Iteration 2000, Testing net
+I1208 08:33:17.333461  7144 net.cpp:328] Copying source layer mnist
+I1208 08:33:17.334461  7144 net.cpp:328] Copying source layer conv1
+I1208 08:33:17.335461  7144 net.cpp:328] Copying source layer pool1
+I1208 08:33:17.336462  7144 net.cpp:328] Copying source layer conv2
+I1208 08:33:17.336462  7144 net.cpp:328] Copying source layer pool2
+I1208 08:33:17.337461  7144 net.cpp:328] Copying source layer ip1
+I1208 08:33:17.338461  7144 net.cpp:328] Copying source layer relu1
+I1208 08:33:17.338461  7144 net.cpp:328] Copying source layer ip2
+I1208 08:33:17.339462  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:33:35.794625  6776 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:33:36.187638  7144 solver.cpp:144] Test score #0: 0.9843
+I1208 08:33:36.187638  7144 solver.cpp:144] Test score #1: 0.0480623
+I1208 08:33:36.187638  7144 net.cpp:399] Serializing 9 layers
+I1208 08:33:36.211238  7144 solver.cpp:163] Snapshotting to lenet_iter_2000
+I1208 08:33:36.275243  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_2000.solverstate
+
+I1208 08:34:07.224262  7144 solver.cpp:249] Iteration 2100, lr = 0.00866784
+I1208 08:34:07.228262  7144 solver.cpp:89] Iteration 2100, loss = 0.0877859
+I1208 08:34:37.788867  7144 solver.cpp:249] Iteration 2200, lr = 0.0086145
+I1208 08:34:37.788867  7144 solver.cpp:89] Iteration 2200, loss = 0.0775368
+I1208 08:35:11.259363  7144 solver.cpp:249] Iteration 2300, lr = 0.00856192
+I1208 08:35:11.262363  7144 solver.cpp:89] Iteration 2300, loss = 0.0442442
+I1208 08:35:44.784581  7144 solver.cpp:249] Iteration 2400, lr = 0.00851008
+I1208 08:35:44.787581  7144 solver.cpp:89] Iteration 2400, loss = 0.0155564
+I1208 08:36:15.865957  7144 solver.cpp:249] Iteration 2500, lr = 0.00845897
+I1208 08:36:15.868957  7144 solver.cpp:89] Iteration 2500, loss = 0.0324554
+I1208 08:36:15.869957  7144 solver.cpp:108] Iteration 2500, Testing net
+I1208 08:36:15.869957  7144 net.cpp:328] Copying source layer mnist
+I1208 08:36:15.870957  7144 net.cpp:328] Copying source layer conv1
+I1208 08:36:15.871958  7144 net.cpp:328] Copying source layer pool1
+I1208 08:36:15.871958  7144 net.cpp:328] Copying source layer conv2
+I1208 08:36:15.872958  7144 net.cpp:328] Copying source layer pool2
+I1208 08:36:15.872958  7144 net.cpp:328] Copying source layer ip1
+I1208 08:36:15.873958  7144 net.cpp:328] Copying source layer relu1
+I1208 08:36:15.873958  7144 net.cpp:328] Copying source layer ip2
+I1208 08:36:15.873958  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:36:34.184273  1620 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:36:34.591092  7144 solver.cpp:144] Test score #0: 0.9821
+I1208 08:36:34.591092  7144 solver.cpp:144] Test score #1: 0.0530371
+I1208 08:36:34.592092  7144 net.cpp:399] Serializing 9 layers
+I1208 08:36:34.608093  7144 solver.cpp:163] Snapshotting to lenet_iter_2500
+I1208 08:36:34.675097  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_2500.solverstate
+
+I1208 08:37:05.332811  7144 solver.cpp:249] Iteration 2600, lr = 0.00840857
+I1208 08:37:05.335811  7144 solver.cpp:89] Iteration 2600, loss = 0.0511282
+I1208 08:37:36.027364  7144 solver.cpp:249] Iteration 2700, lr = 0.00835886
+I1208 08:37:36.030364  7144 solver.cpp:89] Iteration 2700, loss = 0.0170138
+I1208 08:38:06.571490  7144 solver.cpp:249] Iteration 2800, lr = 0.00830984
+I1208 08:38:06.574489  7144 solver.cpp:89] Iteration 2800, loss = 0.000303017
+I1208 08:38:09.903655  5772 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:38:37.196629  7144 solver.cpp:249] Iteration 2900, lr = 0.00826148
+I1208 08:38:37.199628  7144 solver.cpp:89] Iteration 2900, loss = 0.0293677
+I1208 08:39:08.103029  7144 solver.cpp:249] Iteration 3000, lr = 0.00821377
+I1208 08:39:08.105029  7144 solver.cpp:89] Iteration 3000, loss = 0.0233992
+I1208 08:39:08.106029  7144 solver.cpp:108] Iteration 3000, Testing net
+I1208 08:39:08.106029  7144 net.cpp:328] Copying source layer mnist
+I1208 08:39:08.107029  7144 net.cpp:328] Copying source layer conv1
+I1208 08:39:08.107029  7144 net.cpp:328] Copying source layer pool1
+I1208 08:39:08.107029  7144 net.cpp:328] Copying source layer conv2
+I1208 08:39:08.107029  7144 net.cpp:328] Copying source layer pool2
+I1208 08:39:08.108029  7144 net.cpp:328] Copying source layer ip1
+I1208 08:39:08.108029  7144 net.cpp:328] Copying source layer relu1
+I1208 08:39:08.108029  7144 net.cpp:328] Copying source layer ip2
+I1208 08:39:08.108029  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:39:26.683328  5752 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:39:27.042547  7144 solver.cpp:144] Test score #0: 0.9811
+I1208 08:39:27.043547  7144 solver.cpp:144] Test score #1: 0.0543649
+I1208 08:39:27.043547  7144 net.cpp:399] Serializing 9 layers
+I1208 08:39:27.057548  7144 solver.cpp:163] Snapshotting to lenet_iter_3000
+I1208 08:39:27.122750  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_3000.solverstate
+
+I1208 08:39:57.925292  7144 solver.cpp:249] Iteration 3100, lr = 0.0081667
+I1208 08:39:57.928292  7144 solver.cpp:89] Iteration 3100, loss = 0.117751
+I1208 08:40:28.879220  7144 solver.cpp:249] Iteration 3200, lr = 0.00812025
+I1208 08:40:28.882220  7144 solver.cpp:89] Iteration 3200, loss = 0.0953311
+I1208 08:40:59.354126  7144 solver.cpp:249] Iteration 3300, lr = 0.00807442
+I1208 08:40:59.357126  7144 solver.cpp:89] Iteration 3300, loss = 0.110956
+I1208 08:41:29.955260  7144 solver.cpp:249] Iteration 3400, lr = 0.00802918
+I1208 08:41:29.958261  7144 solver.cpp:89] Iteration 3400, loss = 0.00831369
+I1208 08:42:00.377982  7144 solver.cpp:249] Iteration 3500, lr = 0.00798454
+I1208 08:42:00.380982  7144 solver.cpp:89] Iteration 3500, loss = 0.0237844
+I1208 08:42:00.381983  7144 solver.cpp:108] Iteration 3500, Testing net
+I1208 08:42:00.381983  7144 net.cpp:328] Copying source layer mnist
+I1208 08:42:00.382982  7144 net.cpp:328] Copying source layer conv1
+I1208 08:42:00.382982  7144 net.cpp:328] Copying source layer pool1
+I1208 08:42:00.382982  7144 net.cpp:328] Copying source layer conv2
+I1208 08:42:00.382982  7144 net.cpp:328] Copying source layer pool2
+I1208 08:42:00.383982  7144 net.cpp:328] Copying source layer ip1
+I1208 08:42:00.383982  7144 net.cpp:328] Copying source layer relu1
+I1208 08:42:00.383982  7144 net.cpp:328] Copying source layer ip2
+I1208 08:42:00.384982  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:42:18.762658  6048 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:42:19.189079  7144 solver.cpp:144] Test score #0: 0.984
+I1208 08:42:19.189079  7144 solver.cpp:144] Test score #1: 0.0466518
+I1208 08:42:19.189079  7144 net.cpp:399] Serializing 9 layers
+I1208 08:42:19.204679  7144 solver.cpp:163] Snapshotting to lenet_iter_3500
+I1208 08:42:19.274282  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_3500.solverstate
+
+I1208 08:42:51.179646  7144 solver.cpp:249] Iteration 3600, lr = 0.00794046
+I1208 08:42:51.182646  7144 solver.cpp:89] Iteration 3600, loss = 0.0675192
+I1208 08:43:23.521054  7144 solver.cpp:249] Iteration 3700, lr = 0.00789695
+I1208 08:43:23.521054  7144 solver.cpp:89] Iteration 3700, loss = 0.0230091
+I1208 08:43:38.984033  2796 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:43:57.196285  7144 solver.cpp:249] Iteration 3800, lr = 0.007854
+I1208 08:43:57.199285  7144 solver.cpp:89] Iteration 3800, loss = 0.00205484
+I1208 08:44:33.385505  7144 solver.cpp:249] Iteration 3900, lr = 0.00781158
+I1208 08:44:33.388505  7144 solver.cpp:89] Iteration 3900, loss = 0.0270857
+I1208 08:45:11.312028  7144 solver.cpp:249] Iteration 4000, lr = 0.00776969
+I1208 08:45:11.315028  7144 solver.cpp:89] Iteration 4000, loss = 0.0777598
+I1208 08:45:11.316028  7144 solver.cpp:108] Iteration 4000, Testing net
+I1208 08:45:11.316028  7144 net.cpp:328] Copying source layer mnist
+I1208 08:45:11.316028  7144 net.cpp:328] Copying source layer conv1
+I1208 08:45:11.317028  7144 net.cpp:328] Copying source layer pool1
+I1208 08:45:11.317028  7144 net.cpp:328] Copying source layer conv2
+I1208 08:45:11.317028  7144 net.cpp:328] Copying source layer pool2
+I1208 08:45:11.317028  7144 net.cpp:328] Copying source layer ip1
+I1208 08:45:11.318028  7144 net.cpp:328] Copying source layer relu1
+I1208 08:45:11.318028  7144 net.cpp:328] Copying source layer ip2
+I1208 08:45:11.318028  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:45:31.459779  8124 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:45:31.889804  7144 solver.cpp:144] Test score #0: 0.9886
+I1208 08:45:31.889804  7144 solver.cpp:144] Test score #1: 0.0356487
+I1208 08:45:31.889804  7144 net.cpp:399] Serializing 9 layers
+I1208 08:45:31.904805  7144 solver.cpp:163] Snapshotting to lenet_iter_4000
+I1208 08:45:31.990810  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_4000.solverstate
+
+I1208 08:46:05.221503  7144 solver.cpp:249] Iteration 4100, lr = 0.00772833
+I1208 08:46:05.225504  7144 solver.cpp:89] Iteration 4100, loss = 0.000791226
+I1208 08:46:38.241590  7144 solver.cpp:249] Iteration 4200, lr = 0.00768748
+I1208 08:46:38.245590  7144 solver.cpp:89] Iteration 4200, loss = 0.027947
+I1208 08:47:11.352083  7144 solver.cpp:249] Iteration 4300, lr = 0.00764712
+I1208 08:47:11.356083  7144 solver.cpp:89] Iteration 4300, loss = 0.0129179
+I1208 08:47:44.500979  7144 solver.cpp:249] Iteration 4400, lr = 0.00760726
+I1208 08:47:44.503979  7144 solver.cpp:89] Iteration 4400, loss = 0.0926267
+I1208 08:48:17.592471  7144 solver.cpp:249] Iteration 4500, lr = 0.00756788
+I1208 08:48:17.595471  7144 solver.cpp:89] Iteration 4500, loss = 0.0161752
+I1208 08:48:17.595471  7144 solver.cpp:108] Iteration 4500, Testing net
+I1208 08:48:17.596472  7144 net.cpp:328] Copying source layer mnist
+I1208 08:48:17.596472  7144 net.cpp:328] Copying source layer conv1
+I1208 08:48:17.596472  7144 net.cpp:328] Copying source layer pool1
+I1208 08:48:17.597471  7144 net.cpp:328] Copying source layer conv2
+I1208 08:48:17.597471  7144 net.cpp:328] Copying source layer pool2
+I1208 08:48:17.597471  7144 net.cpp:328] Copying source layer ip1
+I1208 08:48:17.597471  7144 net.cpp:328] Copying source layer relu1
+I1208 08:48:17.598471  7144 net.cpp:328] Copying source layer ip2
+I1208 08:48:17.598471  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:48:37.361999  7972 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:48:37.787024  7144 solver.cpp:144] Test score #0: 0.9865
+I1208 08:48:37.787024  7144 solver.cpp:144] Test score #1: 0.0405008
+I1208 08:48:37.787024  7144 net.cpp:399] Serializing 9 layers
+I1208 08:48:37.801023  7144 solver.cpp:163] Snapshotting to lenet_iter_4500
+I1208 08:48:38.152045  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_4500.solverstate
+
+I1208 08:49:11.564955  7144 solver.cpp:249] Iteration 4600, lr = 0.00752897
+I1208 08:49:11.567955  7144 solver.cpp:89] Iteration 4600, loss = 0.00129417
+I1208 08:49:41.071241  7196 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:49:45.629700  7144 solver.cpp:249] Iteration 4700, lr = 0.00749052
+I1208 08:49:45.632701  7144 solver.cpp:89] Iteration 4700, loss = 0.0350756
+I1208 08:50:18.500180  7144 solver.cpp:249] Iteration 4800, lr = 0.00745253
+I1208 08:50:18.503180  7144 solver.cpp:89] Iteration 4800, loss = 0.0105836
+I1208 08:50:51.332855  7144 solver.cpp:249] Iteration 4900, lr = 0.00741498
+I1208 08:50:51.335855  7144 solver.cpp:89] Iteration 4900, loss = 0.00105125
+I1208 08:51:24.069926  7144 solver.cpp:249] Iteration 5000, lr = 0.00737788
+I1208 08:51:24.072926  7144 solver.cpp:89] Iteration 5000, loss = 0.0528467
+I1208 08:51:24.073926  7144 solver.cpp:108] Iteration 5000, Testing net
+I1208 08:51:24.073926  7144 net.cpp:328] Copying source layer mnist
+I1208 08:51:24.073926  7144 net.cpp:328] Copying source layer conv1
+I1208 08:51:24.074926  7144 net.cpp:328] Copying source layer pool1
+I1208 08:51:24.074926  7144 net.cpp:328] Copying source layer conv2
+I1208 08:51:24.074926  7144 net.cpp:328] Copying source layer pool2
+I1208 08:51:24.075927  7144 net.cpp:328] Copying source layer ip1
+I1208 08:51:24.075927  7144 net.cpp:328] Copying source layer relu1
+I1208 08:51:24.075927  7144 net.cpp:328] Copying source layer ip2
+I1208 08:51:24.076926  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:51:43.902258  7596 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:51:44.288280  7144 solver.cpp:144] Test score #0: 0.99
+I1208 08:51:44.289280  7144 solver.cpp:144] Test score #1: 0.0321042
+I1208 08:51:44.289280  7144 net.cpp:399] Serializing 9 layers
+I1208 08:51:44.304281  7144 solver.cpp:163] Snapshotting to lenet_iter_5000
+I1208 08:51:44.369285  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_5000.solverstate
+
+I1208 08:52:17.412972  7144 solver.cpp:249] Iteration 5100, lr = 0.0073412
+I1208 08:52:17.415973  7144 solver.cpp:89] Iteration 5100, loss = 0.0332305
+I1208 08:52:50.655671  7144 solver.cpp:249] Iteration 5200, lr = 0.00730495
+I1208 08:52:50.658671  7144 solver.cpp:89] Iteration 5200, loss = 0.0235953
+I1208 08:53:23.856967  7144 solver.cpp:249] Iteration 5300, lr = 0.00726911
+I1208 08:53:23.860967  7144 solver.cpp:89] Iteration 5300, loss = 0.0156941
+I1208 08:53:57.545493  7144 solver.cpp:249] Iteration 5400, lr = 0.00723368
+I1208 08:53:57.548493  7144 solver.cpp:89] Iteration 5400, loss = 0.0122397
+I1208 08:54:30.133551  7144 solver.cpp:249] Iteration 5500, lr = 0.00719865
+I1208 08:54:30.137552  7144 solver.cpp:89] Iteration 5500, loss = 0.0979391
+I1208 08:54:30.138551  7144 solver.cpp:108] Iteration 5500, Testing net
+I1208 08:54:30.138551  7144 net.cpp:328] Copying source layer mnist
+I1208 08:54:30.138551  7144 net.cpp:328] Copying source layer conv1
+I1208 08:54:30.139551  7144 net.cpp:328] Copying source layer pool1
+I1208 08:54:30.139551  7144 net.cpp:328] Copying source layer conv2
+I1208 08:54:30.139551  7144 net.cpp:328] Copying source layer pool2
+I1208 08:54:30.140552  7144 net.cpp:328] Copying source layer ip1
+I1208 08:54:30.140552  7144 net.cpp:328] Copying source layer relu1
+I1208 08:54:30.140552  7144 net.cpp:328] Copying source layer ip2
+I1208 08:54:30.140552  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:54:49.950481  6012 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:54:50.336504  7144 solver.cpp:144] Test score #0: 0.9889
+I1208 08:54:50.337504  7144 solver.cpp:144] Test score #1: 0.0318684
+I1208 08:54:50.337504  7144 net.cpp:399] Serializing 9 layers
+I1208 08:54:50.350504  7144 solver.cpp:163] Snapshotting to lenet_iter_5500
+I1208 08:54:50.694525  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_5500.solverstate
+
+I1208 08:55:22.663348  7144 solver.cpp:249] Iteration 5600, lr = 0.00716402
+I1208 08:55:22.666348  7144 solver.cpp:89] Iteration 5600, loss = 0.00263964
+I1208 08:55:30.018368  7944 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:55:54.879587  7144 solver.cpp:249] Iteration 5700, lr = 0.00712977
+I1208 08:55:54.882588  7144 solver.cpp:89] Iteration 5700, loss = 0.00285274
+I1208 08:56:27.025624  7144 solver.cpp:249] Iteration 5800, lr = 0.0070959
+I1208 08:56:27.028625  7144 solver.cpp:89] Iteration 5800, loss = 0.00225223
+I1208 08:57:04.798698  7144 solver.cpp:249] Iteration 5900, lr = 0.0070624
+I1208 08:57:04.801699  7144 solver.cpp:89] Iteration 5900, loss = 0.0206114
+I1208 08:57:38.925650  7144 solver.cpp:249] Iteration 6000, lr = 0.00702927
+I1208 08:57:38.928650  7144 solver.cpp:89] Iteration 6000, loss = 0.00769593
+I1208 08:57:38.928650  7144 solver.cpp:108] Iteration 6000, Testing net
+I1208 08:57:38.928650  7144 net.cpp:328] Copying source layer mnist
+I1208 08:57:38.929651  7144 net.cpp:328] Copying source layer conv1
+I1208 08:57:38.929651  7144 net.cpp:328] Copying source layer pool1
+I1208 08:57:38.929651  7144 net.cpp:328] Copying source layer conv2
+I1208 08:57:38.929651  7144 net.cpp:328] Copying source layer pool2
+I1208 08:57:38.929651  7144 net.cpp:328] Copying source layer ip1
+I1208 08:57:38.930651  7144 net.cpp:328] Copying source layer relu1
+I1208 08:57:38.930651  7144 net.cpp:328] Copying source layer ip2
+I1208 08:57:38.930651  7144 net.cpp:324] Ignoring source layer loss
+I1208 08:58:06.463225  7124 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 08:58:06.837247  7144 solver.cpp:144] Test score #0: 0.99
+I1208 08:58:06.838248  7144 solver.cpp:144] Test score #1: 0.0289993
+I1208 08:58:06.838248  7144 net.cpp:399] Serializing 9 layers
+I1208 08:58:06.852248  7144 solver.cpp:163] Snapshotting to lenet_iter_6000
+I1208 08:58:06.919251  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_6000.solverstate
+
+I1208 08:58:40.529175  7144 solver.cpp:249] Iteration 6100, lr = 0.0069965
+I1208 08:58:40.533174  7144 solver.cpp:89] Iteration 6100, loss = 0.00397423
+I1208 08:59:21.715530  7144 solver.cpp:249] Iteration 6200, lr = 0.00696408
+I1208 08:59:21.719530  7144 solver.cpp:89] Iteration 6200, loss = 0.026002
+I1208 09:00:03.707931  7144 solver.cpp:249] Iteration 6300, lr = 0.00693201
+I1208 09:00:03.711932  7144 solver.cpp:89] Iteration 6300, loss = 0.00266129
+I1208 09:00:42.303139  7144 solver.cpp:249] Iteration 6400, lr = 0.00690029
+I1208 09:00:42.306139  7144 solver.cpp:89] Iteration 6400, loss = 0.0169269
+I1208 09:01:25.546612  7144 solver.cpp:249] Iteration 6500, lr = 0.0068689
+I1208 09:01:25.548612  7144 solver.cpp:89] Iteration 6500, loss = 0.00794373
+I1208 09:01:25.549612  7144 solver.cpp:108] Iteration 6500, Testing net
+I1208 09:01:25.549612  7144 net.cpp:328] Copying source layer mnist
+I1208 09:01:25.549612  7144 net.cpp:328] Copying source layer conv1
+I1208 09:01:25.549612  7144 net.cpp:328] Copying source layer pool1
+I1208 09:01:25.550613  7144 net.cpp:328] Copying source layer conv2
+I1208 09:01:25.550613  7144 net.cpp:328] Copying source layer pool2
+I1208 09:01:25.550613  7144 net.cpp:328] Copying source layer ip1
+I1208 09:01:25.550613  7144 net.cpp:328] Copying source layer relu1
+I1208 09:01:25.551614  7144 net.cpp:328] Copying source layer ip2
+I1208 09:01:25.551614  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:01:49.103960  7580 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:01:49.672992  7144 solver.cpp:144] Test score #0: 0.99
+I1208 09:01:49.673992  7144 solver.cpp:144] Test score #1: 0.0310019
+I1208 09:01:49.673992  7144 net.cpp:399] Serializing 9 layers
+I1208 09:01:49.687994  7144 solver.cpp:163] Snapshotting to lenet_iter_6500
+I1208 09:01:50.036013  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_6500.solverstate
+
+I1208 09:02:13.562360  8152 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:02:31.378378  7144 solver.cpp:249] Iteration 6600, lr = 0.00683784
+I1208 09:02:31.381378  7144 solver.cpp:89] Iteration 6600, loss = 0.00727538
+I1208 09:03:03.650223  7144 solver.cpp:249] Iteration 6700, lr = 0.00680711
+I1208 09:03:03.653224  7144 solver.cpp:89] Iteration 6700, loss = 0.0139582
+I1208 09:03:50.708915  7144 solver.cpp:249] Iteration 6800, lr = 0.0067767
+I1208 09:03:50.711915  7144 solver.cpp:89] Iteration 6800, loss = 0.00548547
+I1208 09:04:30.260177  7144 solver.cpp:249] Iteration 6900, lr = 0.0067466
+I1208 09:04:30.263177  7144 solver.cpp:89] Iteration 6900, loss = 0.0171583
+I1208 09:05:07.592314  7144 solver.cpp:249] Iteration 7000, lr = 0.00671681
+I1208 09:05:07.595314  7144 solver.cpp:89] Iteration 7000, loss = 0.00311055
+I1208 09:05:07.595314  7144 solver.cpp:108] Iteration 7000, Testing net
+I1208 09:05:07.595314  7144 net.cpp:328] Copying source layer mnist
+I1208 09:05:07.595314  7144 net.cpp:328] Copying source layer conv1
+I1208 09:05:07.596313  7144 net.cpp:328] Copying source layer pool1
+I1208 09:05:07.596313  7144 net.cpp:328] Copying source layer conv2
+I1208 09:05:07.596313  7144 net.cpp:328] Copying source layer pool2
+I1208 09:05:07.596313  7144 net.cpp:328] Copying source layer ip1
+I1208 09:05:07.596313  7144 net.cpp:328] Copying source layer relu1
+I1208 09:05:07.597313  7144 net.cpp:328] Copying source layer ip2
+I1208 09:05:07.597313  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:05:32.585742  6508 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:05:32.960764  7144 solver.cpp:144] Test score #0: 0.9906
+I1208 09:05:32.960764  7144 solver.cpp:144] Test score #1: 0.0302355
+I1208 09:05:32.960764  7144 net.cpp:399] Serializing 9 layers
+I1208 09:05:32.974764  7144 solver.cpp:163] Snapshotting to lenet_iter_7000
+I1208 09:05:33.041769  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_7000.solverstate
+
+I1208 09:06:06.769697  7144 solver.cpp:249] Iteration 7100, lr = 0.00668733
+I1208 09:06:06.773699  7144 solver.cpp:89] Iteration 7100, loss = 0.013377
+I1208 09:06:41.187666  7144 solver.cpp:249] Iteration 7200, lr = 0.00665815
+I1208 09:06:41.191666  7144 solver.cpp:89] Iteration 7200, loss = 0.00827602
+I1208 09:07:20.575919  7144 solver.cpp:249] Iteration 7300, lr = 0.00662927
+I1208 09:07:20.578919  7144 solver.cpp:89] Iteration 7300, loss = 0.00209379
+I1208 09:07:54.538861  7144 solver.cpp:249] Iteration 7400, lr = 0.00660067
+I1208 09:07:54.541862  7144 solver.cpp:89] Iteration 7400, loss = 0.00305391
+I1208 09:08:26.155670  7588 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:08:26.843709  7144 solver.cpp:249] Iteration 7500, lr = 0.00657236
+I1208 09:08:26.846709  7144 solver.cpp:89] Iteration 7500, loss = 0.00138083
+I1208 09:08:26.846709  7144 solver.cpp:108] Iteration 7500, Testing net
+I1208 09:08:26.847709  7144 net.cpp:328] Copying source layer mnist
+I1208 09:08:26.847709  7144 net.cpp:328] Copying source layer conv1
+I1208 09:08:26.847709  7144 net.cpp:328] Copying source layer pool1
+I1208 09:08:26.847709  7144 net.cpp:328] Copying source layer conv2
+I1208 09:08:26.847709  7144 net.cpp:328] Copying source layer pool2
+I1208 09:08:26.848709  7144 net.cpp:328] Copying source layer ip1
+I1208 09:08:26.848709  7144 net.cpp:328] Copying source layer relu1
+I1208 09:08:26.848709  7144 net.cpp:328] Copying source layer ip2
+I1208 09:08:26.848709  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:08:46.110811  5944 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:08:46.476832  7144 solver.cpp:144] Test score #0: 0.9889
+I1208 09:08:46.476832  7144 solver.cpp:144] Test score #1: 0.0329465
+I1208 09:08:46.476832  7144 net.cpp:399] Serializing 9 layers
+I1208 09:08:46.489833  7144 solver.cpp:163] Snapshotting to lenet_iter_7500
+I1208 09:08:46.556838  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_7500.solverstate
+
+I1208 09:09:19.877743  7144 solver.cpp:249] Iteration 7600, lr = 0.00654433
+I1208 09:09:19.879744  7144 solver.cpp:89] Iteration 7600, loss = 0.0174743
+I1208 09:09:54.297711  7144 solver.cpp:249] Iteration 7700, lr = 0.00651658
+I1208 09:09:54.301712  7144 solver.cpp:89] Iteration 7700, loss = 0.0153792
+I1208 09:10:26.337544  7144 solver.cpp:249] Iteration 7800, lr = 0.00648911
+I1208 09:10:26.340544  7144 solver.cpp:89] Iteration 7800, loss = 0.00294923
+I1208 09:10:58.106361  7144 solver.cpp:249] Iteration 7900, lr = 0.0064619
+I1208 09:10:58.109361  7144 solver.cpp:89] Iteration 7900, loss = 0.0648624
+I1208 09:11:29.939182  7144 solver.cpp:249] Iteration 8000, lr = 0.00643496
+I1208 09:11:29.943182  7144 solver.cpp:89] Iteration 8000, loss = 0.00458659
+I1208 09:11:29.944182  7144 solver.cpp:108] Iteration 8000, Testing net
+I1208 09:11:29.944182  7144 net.cpp:328] Copying source layer mnist
+I1208 09:11:29.944182  7144 net.cpp:328] Copying source layer conv1
+I1208 09:11:29.945183  7144 net.cpp:328] Copying source layer pool1
+I1208 09:11:29.945183  7144 net.cpp:328] Copying source layer conv2
+I1208 09:11:29.945183  7144 net.cpp:328] Copying source layer pool2
+I1208 09:11:29.946182  7144 net.cpp:328] Copying source layer ip1
+I1208 09:11:29.946182  7144 net.cpp:328] Copying source layer relu1
+I1208 09:11:29.946182  7144 net.cpp:328] Copying source layer ip2
+I1208 09:11:29.946182  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:11:49.350292  7588 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:11:49.764315  7144 solver.cpp:144] Test score #0: 0.9906
+I1208 09:11:49.765316  7144 solver.cpp:144] Test score #1: 0.0304259
+I1208 09:11:49.765316  7144 net.cpp:399] Serializing 9 layers
+I1208 09:11:49.779316  7144 solver.cpp:163] Snapshotting to lenet_iter_8000
+I1208 09:11:49.845320  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_8000.solverstate
+
+I1208 09:12:22.591193  7144 solver.cpp:249] Iteration 8100, lr = 0.00640827
+I1208 09:12:22.594193  7144 solver.cpp:89] Iteration 8100, loss = 0.0685359
+I1208 09:12:55.281064  7144 solver.cpp:249] Iteration 8200, lr = 0.00638185
+I1208 09:12:55.284064  7144 solver.cpp:89] Iteration 8200, loss = 0.00211584
+I1208 09:13:28.738977  7144 solver.cpp:249] Iteration 8300, lr = 0.00635568
+I1208 09:13:28.741977  7144 solver.cpp:89] Iteration 8300, loss = 0.00249958
+I1208 09:14:01.562855  7144 solver.cpp:249] Iteration 8400, lr = 0.00632975
+I1208 09:14:01.565855  7144 solver.cpp:89] Iteration 8400, loss = 0.0090548
+I1208 09:14:13.400532  6780 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:14:34.398732  7144 solver.cpp:249] Iteration 8500, lr = 0.00630407
+I1208 09:14:34.401732  7144 solver.cpp:89] Iteration 8500, loss = 0.00158006
+I1208 09:14:34.401732  7144 solver.cpp:108] Iteration 8500, Testing net
+I1208 09:14:34.402732  7144 net.cpp:328] Copying source layer mnist
+I1208 09:14:34.402732  7144 net.cpp:328] Copying source layer conv1
+I1208 09:14:34.402732  7144 net.cpp:328] Copying source layer pool1
+I1208 09:14:34.403733  7144 net.cpp:328] Copying source layer conv2
+I1208 09:14:34.403733  7144 net.cpp:328] Copying source layer pool2
+I1208 09:14:34.403733  7144 net.cpp:328] Copying source layer ip1
+I1208 09:14:34.403733  7144 net.cpp:328] Copying source layer relu1
+I1208 09:14:34.404732  7144 net.cpp:328] Copying source layer ip2
+I1208 09:14:34.404732  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:14:54.247867  7324 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:14:54.634889  7144 solver.cpp:144] Test score #0: 0.9914
+I1208 09:14:54.635890  7144 solver.cpp:144] Test score #1: 0.0296211
+I1208 09:14:54.635890  7144 net.cpp:399] Serializing 9 layers
+I1208 09:14:54.651890  7144 solver.cpp:163] Snapshotting to lenet_iter_8500
+I1208 09:14:54.716894  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_8500.solverstate
+
+I1208 09:15:27.735784  7144 solver.cpp:249] Iteration 8600, lr = 0.00627864
+I1208 09:15:27.737783  7144 solver.cpp:89] Iteration 8600, loss = 0.00586681
+I1208 09:15:59.976627  7144 solver.cpp:249] Iteration 8700, lr = 0.00625344
+I1208 09:15:59.979627  7144 solver.cpp:89] Iteration 8700, loss = 0.0079254
+I1208 09:16:32.188469  7144 solver.cpp:249] Iteration 8800, lr = 0.00622847
+I1208 09:16:32.190469  7144 solver.cpp:89] Iteration 8800, loss = 0.00948811
+I1208 09:17:04.712329  7144 solver.cpp:249] Iteration 8900, lr = 0.00620374
+I1208 09:17:04.716331  7144 solver.cpp:89] Iteration 8900, loss = 0.0155729
+I1208 09:17:38.538264  7144 solver.cpp:249] Iteration 9000, lr = 0.00617924
+I1208 09:17:38.542264  7144 solver.cpp:89] Iteration 9000, loss = 0.00731106
+I1208 09:17:38.542264  7144 solver.cpp:108] Iteration 9000, Testing net
+I1208 09:17:38.542264  7144 net.cpp:328] Copying source layer mnist
+I1208 09:17:38.542264  7144 net.cpp:328] Copying source layer conv1
+I1208 09:17:38.543265  7144 net.cpp:328] Copying source layer pool1
+I1208 09:17:38.543265  7144 net.cpp:328] Copying source layer conv2
+I1208 09:17:38.543265  7144 net.cpp:328] Copying source layer pool2
+I1208 09:17:38.543265  7144 net.cpp:328] Copying source layer ip1
+I1208 09:17:38.543265  7144 net.cpp:328] Copying source layer relu1
+I1208 09:17:38.544265  7144 net.cpp:328] Copying source layer ip2
+I1208 09:17:38.544265  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:17:58.106384  8036 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:17:58.491405  7144 solver.cpp:144] Test score #0: 0.9896
+I1208 09:17:58.491405  7144 solver.cpp:144] Test score #1: 0.0304654
+I1208 09:17:58.492406  7144 net.cpp:399] Serializing 9 layers
+I1208 09:17:58.505406  7144 solver.cpp:163] Snapshotting to lenet_iter_9000
+I1208 09:17:58.572410  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_9000.solverstate
+
+I1208 09:18:30.759251  7144 solver.cpp:249] Iteration 9100, lr = 0.00615496
+I1208 09:18:30.763252  7144 solver.cpp:89] Iteration 9100, loss = 0.00540133
+I1208 09:19:03.190106  7144 solver.cpp:249] Iteration 9200, lr = 0.0061309
+I1208 09:19:03.193106  7144 solver.cpp:89] Iteration 9200, loss = 0.00126056
+I1208 09:19:36.226996  7144 solver.cpp:249] Iteration 9300, lr = 0.00610706
+I1208 09:19:36.229996  7144 solver.cpp:89] Iteration 9300, loss = 0.00310701
+I1208 09:19:59.608333  6636 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:20:08.306831  7144 solver.cpp:249] Iteration 9400, lr = 0.00608343
+I1208 09:20:08.309831  7144 solver.cpp:89] Iteration 9400, loss = 0.00137072
+I1208 09:20:39.955641  7144 solver.cpp:249] Iteration 9500, lr = 0.00606002
+I1208 09:20:39.958642  7144 solver.cpp:89] Iteration 9500, loss = 0.00460174
+I1208 09:20:39.958642  7144 solver.cpp:108] Iteration 9500, Testing net
+I1208 09:20:39.959641  7144 net.cpp:328] Copying source layer mnist
+I1208 09:20:39.959641  7144 net.cpp:328] Copying source layer conv1
+I1208 09:20:39.959641  7144 net.cpp:328] Copying source layer pool1
+I1208 09:20:39.959641  7144 net.cpp:328] Copying source layer conv2
+I1208 09:20:39.959641  7144 net.cpp:328] Copying source layer pool2
+I1208 09:20:39.960641  7144 net.cpp:328] Copying source layer ip1
+I1208 09:20:39.960641  7144 net.cpp:328] Copying source layer relu1
+I1208 09:20:39.960641  7144 net.cpp:328] Copying source layer ip2
+I1208 09:20:39.960641  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:20:58.963728  7640 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:20:59.388752  7144 solver.cpp:144] Test score #0: 0.9892
+I1208 09:20:59.388752  7144 solver.cpp:144] Test score #1: 0.0333746
+I1208 09:20:59.389752  7144 net.cpp:399] Serializing 9 layers
+I1208 09:20:59.402753  7144 solver.cpp:163] Snapshotting to lenet_iter_9500
+I1208 09:20:59.467757  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_9500.solverstate
+
+I1208 09:21:32.397640  7144 solver.cpp:249] Iteration 9600, lr = 0.00603682
+I1208 09:21:32.400640  7144 solver.cpp:89] Iteration 9600, loss = 0.00951391
+I1208 09:22:05.520535  7144 solver.cpp:249] Iteration 9700, lr = 0.00601382
+I1208 09:22:05.523535  7144 solver.cpp:89] Iteration 9700, loss = 0.00481453
+I1208 09:22:39.112457  7144 solver.cpp:249] Iteration 9800, lr = 0.00599102
+I1208 09:22:39.115456  7144 solver.cpp:89] Iteration 9800, loss = 0.00372449
+I1208 09:23:14.938505  7144 solver.cpp:249] Iteration 9900, lr = 0.00596843
+I1208 09:23:14.941505  7144 solver.cpp:89] Iteration 9900, loss = 0.00508234
+I1208 09:23:49.185464  7144 solver.cpp:249] Iteration 10000, lr = 0.00594604
+I1208 09:23:49.189465  7144 solver.cpp:89] Iteration 10000, loss = 0.00338493
+I1208 09:23:49.190464  7144 solver.cpp:108] Iteration 10000, Testing net
+I1208 09:23:49.190464  7144 net.cpp:328] Copying source layer mnist
+I1208 09:23:49.190464  7144 net.cpp:328] Copying source layer conv1
+I1208 09:23:49.190464  7144 net.cpp:328] Copying source layer pool1
+I1208 09:23:49.191464  7144 net.cpp:328] Copying source layer conv2
+I1208 09:23:49.191464  7144 net.cpp:328] Copying source layer pool2
+I1208 09:23:49.191464  7144 net.cpp:328] Copying source layer ip1
+I1208 09:23:49.191464  7144 net.cpp:328] Copying source layer relu1
+I1208 09:23:49.192464  7144 net.cpp:328] Copying source layer ip2
+I1208 09:23:49.192464  7144 net.cpp:324] Ignoring source layer loss
+I1208 09:24:09.404621  6524 data_layer.cpp:173] Restarting data prefetching from start.
+I1208 09:24:09.780642  7144 solver.cpp:144] Test score #0: 0.9902
+I1208 09:24:09.780642  7144 solver.cpp:144] Test score #1: 0.0304106
+I1208 09:24:09.781642  7144 net.cpp:399] Serializing 9 layers
+I1208 09:24:09.796643  7144 solver.cpp:163] Snapshotting to lenet_iter_10000
+I1208 09:24:09.867647  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_10000.solverstat
+e
+I1208 09:24:09.922651  7144 net.cpp:399] Serializing 9 layers
+I1208 09:24:09.936651  7144 solver.cpp:163] Snapshotting to lenet_iter_10000
+I1208 09:24:10.004655  7144 solver.cpp:176] Snapshotting solver state to lenet_iter_10000.solverstat
+e
+I1208 09:24:10.059659  7144 solver.cpp:102] Optimization Done.
+I1208 09:24:10.060658  7144 train_net.cpp:40] Optimization Done.
+
+D:\caffe-windows\caffe-windows\examples\mnist>echo "train done......"
+"train done......"
+
+D:\caffe-windows\caffe-windows\examples\mnist>pause
+Press any key to continue . . .
+
