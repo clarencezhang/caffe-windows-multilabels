@@ -3,9 +3,8 @@
 #include <cstring>
 #include <string>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "google/protobuf/text_format.h"
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"
@@ -26,10 +25,10 @@ class PaddingLayerUpgradeTest : public ::testing::Test {
     // input_param_string results in the proto specified by
     // output_param_string.
     NetParameter input_param;
-    CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(
+    CHECK(google::protobuf::TextFormat::ParseFromString(
         input_param_string, &input_param));
     NetParameter expected_output_param;
-    CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(
+    CHECK(google::protobuf::TextFormat::ParseFromString(
         output_param_string, &expected_output_param));
     NetParameter actual_output_param;
     UpgradeV0PaddingLayers(input_param, &actual_output_param);
@@ -1096,10 +1095,10 @@ class V0UpgradeTest : public ::testing::Test {
     // input_param_string results in the NetParameter proto specified by
     // output_param_string.
     NetParameter input_param;
-    CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(
+    CHECK(google::protobuf::TextFormat::ParseFromString(
         input_param_string, &input_param));
     NetParameter expected_output_param;
-    CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(
+    CHECK(google::protobuf::TextFormat::ParseFromString(
         output_param_string, &expected_output_param));
     NetParameter actual_output_param;
     UpgradeV0Net(input_param, &actual_output_param);

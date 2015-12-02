@@ -4,7 +4,6 @@
 #include <leveldb/db.h>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 #include "gtest/gtest.h"
 #include "caffe/common.hpp"
@@ -27,7 +26,7 @@ class NetTest : public ::testing::Test {
     options.error_if_exists = true;
     options.create_if_missing = true;
     leveldb::Status status = leveldb::DB::Open(options, filename_, &db);
-    CAFFE_CHECK(status.ok());
+    CHECK(status.ok());
     for (int i = 0; i < 5; ++i) {
       Datum datum;
       //datum.set_label(i);
@@ -97,7 +96,7 @@ TYPED_TEST_CASE(NetTest, Dtypes);
 
 TYPED_TEST(NetTest, TestHasBlob) {
   NetParameter param;
-  CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
+  CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
   Net<TypeParam> net(param);
   EXPECT_TRUE(net.has_blob("data"));
   EXPECT_TRUE(net.has_blob("label"));
@@ -107,7 +106,7 @@ TYPED_TEST(NetTest, TestHasBlob) {
 
 TYPED_TEST(NetTest, TestGetBlob) {
   NetParameter param;
-  CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
+  CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
   Net<TypeParam> net(param);
   EXPECT_EQ(net.blob_by_name("data"), net.blobs()[0]);
   EXPECT_EQ(net.blob_by_name("label"), net.blobs()[1]);
@@ -117,7 +116,7 @@ TYPED_TEST(NetTest, TestGetBlob) {
 
 TYPED_TEST(NetTest, TestHasLayer) {
   NetParameter param;
-  CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
+  CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
   Net<TypeParam> net(param);
   EXPECT_TRUE(net.has_layer("data"));
   EXPECT_TRUE(net.has_layer("innerproduct"));
@@ -127,7 +126,7 @@ TYPED_TEST(NetTest, TestHasLayer) {
 
 TYPED_TEST(NetTest, TestGetLayerByName) {
   NetParameter param;
-  CAFFE_CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
+  CHECK(google::protobuf::TextFormat::ParseFromString(this->proto_, &param));
   Net<TypeParam> net(param);
   EXPECT_EQ(net.layer_by_name("data"), net.layers()[0]);
   EXPECT_EQ(net.layer_by_name("innerproduct"), net.layers()[1]);

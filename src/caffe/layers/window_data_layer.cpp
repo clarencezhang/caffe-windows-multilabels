@@ -12,7 +12,6 @@
 #include <fstream>  // NOLINT(readability/streams)
 #include <utility>
 #include <math.h>
-#include <iostream>
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -143,10 +142,10 @@ void* WindowDataLayerPrefetch(void* layer_pointer) {
         x2 = x2 - pad_x2;
         y1 = y1 + pad_y1;
         y2 = y2 - pad_y2;
-        CAFFE_CHECK_GT(x1, -1);
-        CAFFE_CHECK_GT(y1, -1);
-        CAFFE_CHECK_LT(x2, cv_img.cols);
-        CAFFE_CHECK_LT(y2, cv_img.rows);
+        CHECK_GT(x1, -1);
+        CHECK_GT(y1, -1);
+        CHECK_LT(x2, cv_img.cols);
+        CHECK_LT(y2, cv_img.rows);
 
         int clipped_height = y2-y1+1;
         int clipped_width = x2-x1+1;
@@ -269,8 +268,8 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
   // for background (non-object) windows. We use an overlap threshold
   // to decide which is which.
 
-  CAFFE_CHECK_EQ(bottom.size(), 0);// << "Window data Layer takes no input blobs.";
-  CAFFE_CHECK_EQ(top->size(), 2);// << "Window data Layer prodcues two blobs as output.";
+  CHECK_EQ(bottom.size(), 0) << "Window data Layer takes no input blobs.";
+  CHECK_EQ(top->size(), 2) << "Window data Layer prodcues two blobs as output.";
 
   // window_file format
   // repeated:
@@ -291,8 +290,8 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       << this->layer_param_.window_data_param().fg_fraction();
 
   std::ifstream infile(this->layer_param_.window_data_param().source().c_str());
-  CAFFE_CHECK(infile.good());// << "Failed to open window file "
-     // << this->layer_param_.window_data_param().source() << std::endl;
+  CHECK(infile.good()) << "Failed to open window file "
+      << this->layer_param_.window_data_param().source() << std::endl;
 
   map<int, int> label_hist;
   label_hist.insert(std::make_pair(0, 0));
@@ -300,7 +299,7 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
   string hashtag;
   int image_index, channels;
   while (infile >> hashtag >> image_index) {
-    CAFFE_CHECK_EQ(hashtag, "#");
+    CHECK_EQ(hashtag, "#");
     // read image path
     string image_path;
     infile >> image_path;
@@ -334,7 +333,7 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       // add window to foreground list or background list
       if (overlap >= fg_threshold) {
         int label = window[WindowDataLayer::LABEL];
-        CAFFE_CHECK_GT(label, 0);
+        CHECK_GT(label, 0);
         fg_windows_.push_back(window);
         label_hist.insert(std::make_pair(label, 0));
         label_hist[label]++;
@@ -373,7 +372,7 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 
   // image
   int crop_size = this->layer_param_.window_data_param().crop_size();
-  CAFFE_CHECK_GT(crop_size, 0);
+  CHECK_GT(crop_size, 0);
   const int batch_size = this->layer_param_.window_data_param().batch_size();
   (*top)[0]->Reshape(batch_size, channels, crop_size, crop_size);
   prefetch_data_.reset(
@@ -395,9 +394,9 @@ void WindowDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
     BlobProto blob_proto;
     ReadProtoFromBinaryFileOrDie(mean_file, &blob_proto);
     data_mean_.FromProto(blob_proto);
-    CAFFE_CHECK_EQ(data_mean_.num(), 1);
-    CAFFE_CHECK_EQ(data_mean_.width(), data_mean_.height());
-    CAFFE_CHECK_EQ(data_mean_.channels(), channels);
+    CHECK_EQ(data_mean_.num(), 1);
+    CHECK_EQ(data_mean_.width(), data_mean_.height());
+    CHECK_EQ(data_mean_.channels(), channels);
   } else {
     // Simply initialize an all-empty mean.
     data_mean_.Reshape(1, channels, crop_size, crop_size);
@@ -426,20 +425,20 @@ void WindowDataLayer<Dtype>::CreatePrefetchThread() {
     prefetch_rng_.reset();
   }
   // Create the thread.
-  //CAFFE_CHECK(!pthread_create(&thread_, NULL, WindowDataLayerPrefetch<Dtype>,
+  //CHECK(!pthread_create(&thread_, NULL, WindowDataLayerPrefetch<Dtype>,
   //      static_cast<void*>(this))) << "Pthread execution failed.";
   thread_ = thread(WindowDataLayerPrefetch<Dtype>,reinterpret_cast<void*>(this));
 }
 
 template <typename Dtype>
 void WindowDataLayer<Dtype>::JoinPrefetchThread() {
-  //CAFFE_CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
+  //CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
   thread_.join();
 }
 
 template <typename Dtype>
 unsigned int WindowDataLayer<Dtype>::PrefetchRand() {
-  CAFFE_CHECK(prefetch_rng_);
+  CHECK(prefetch_rng_);
   caffe::rng_t* prefetch_rng =
       static_cast<caffe::rng_t*>(prefetch_rng_->generator());
   return (*prefetch_rng)();

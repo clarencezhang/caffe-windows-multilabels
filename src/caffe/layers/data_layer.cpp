@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/util/io.hpp"
@@ -23,11 +22,11 @@ namespace caffe {
 
 	template <typename Dtype>
 	void* DataLayerPrefetch(void* layer_pointer) {
-		CAFFE_CHECK(layer_pointer);
+		CHECK(layer_pointer);
 		DataLayer<Dtype>* layer = static_cast<DataLayer<Dtype>*>(layer_pointer);
-		CAFFE_CHECK(layer);
+		CHECK(layer);
 		Datum datum;
-		CAFFE_CHECK(layer->prefetch_data_);
+		CHECK(layer->prefetch_data_);
 		Dtype* top_data = layer->prefetch_data_->mutable_cpu_data(); //数据
 		Dtype* top_label;                                            //标签
 		if (layer->output_labels_) {
@@ -53,17 +52,17 @@ namespace caffe {
 			//每一批数据的数量是batchsize，一个循环拉取一张
 
 			// get a blob
-			CAFFE_CHECK(layer->iter_);
-			CAFFE_CHECK(layer->iter_->Valid());
+			CHECK(layer->iter_);
+			CHECK(layer->iter_->Valid());
 			datum.ParseFromString(layer->iter_->value().ToString());//利用迭代器拉取下一批数据
 			const string& data = datum.data();
 
 			int label_blob_channels = layer->prefetch_label_->channels();
 			int label_data_dim = datum.label_size();
-			CAFFE_CHECK_EQ(layer->prefetch_label_->channels(), datum.label_size()); // << "label size is NOT the same.";
+			CHECK_EQ(layer->prefetch_label_->channels(), datum.label_size()) << "label size is NOT the same.";
 			
 			if (crop_size) {//如果需要裁剪  
-				CAFFE_CHECK(data.size()); // << "Image cropping only support uint8 data";
+				CHECK(data.size()) << "Image cropping only support uint8 data";
 				int h_off, w_off;
 				// We only do random crop when we do training.
 				//只是在训练阶段做随机裁剪 
@@ -121,7 +120,7 @@ namespace caffe {
 				}
 			}
 
-		    #if 0
+		
 			if (g_item_id++ < 5)
 			{
 				int label_size = datum.label_size();	
@@ -148,17 +147,16 @@ namespace caffe {
 						fout_image_raw_data<<" "<<strHexByte;
 					}
 					
-					fout_image_raw_data<<std::endl;
+					fout_image_raw_data<<endl;
 				}
 				
-				fout_image_raw_data<<std::endl;
+				fout_image_raw_data<<endl;
 				for (int j = 0; j < label_size; ++j) {
 					fout_image_raw_data<<datum.label(j);
 				}	
 
 				fout_image_raw_data.close();
 			}
-            #endif
 		
 			if (layer->output_labels_) {
 				int label_size = datum.label_size();				
@@ -188,9 +186,9 @@ namespace caffe {
 	template <typename Dtype>
 	void DataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 0); // << "Data Layer takes no input blobs.";
-			CAFFE_CHECK_GE(top->size(), 1); // << "Data Layer takes at least one blob as output.";
-			CAFFE_CHECK_LE(top->size(), 2); // << "Data Layer takes at most two blobs as output.";
+			CHECK_EQ(bottom.size(), 0) << "Data Layer takes no input blobs.";
+			CHECK_GE(top->size(), 1) << "Data Layer takes at least one blob as output.";
+			CHECK_LE(top->size(), 2) << "Data Layer takes at most two blobs as output.";
 			if (top->size() == 1) {
 				output_labels_ = false;
 			} else {
@@ -208,9 +206,9 @@ namespace caffe {
 			leveldb::Status status = leveldb::DB::Open(
 				options, this->layer_param_.data_param().source(), &db_temp);
 			
-			CAFFE_CHECK(status.ok()); // << "Failed to open leveldb "
-				// << this->layer_param_.data_param().source() << std::endl
-				// << status.ToString();
+			CHECK(status.ok()) << "Failed to open leveldb "
+				<< this->layer_param_.data_param().source() << std::endl
+				<< status.ToString();
 			
 			db_.reset(db_temp);
 			iter_.reset(db_->NewIterator(leveldb::ReadOptions()));//通过迭代器来操纵leveldb
@@ -278,8 +276,8 @@ namespace caffe {
 			datum_height_ = datum.height();
 			datum_width_ = datum.width();
 			datum_size_ = datum.channels() * datum.height() * datum.width();
-			CAFFE_CHECK_GT(datum_height_, crop_size);
-			CAFFE_CHECK_GT(datum_width_, crop_size);
+			CHECK_GT(datum_height_, crop_size);
+			CHECK_GT(datum_width_, crop_size);
 			
 			// check if we want to have mean  是否要减去均值  
 			if (this->layer_param_.data_param().has_mean_file()) {
@@ -288,10 +286,10 @@ namespace caffe {
 				BlobProto blob_proto;
 				ReadProtoFromBinaryFileOrDie(mean_file.c_str(), &blob_proto);
 				data_mean_.FromProto(blob_proto);
-				CAFFE_CHECK_EQ(data_mean_.num(), 1);
-				CAFFE_CHECK_EQ(data_mean_.channels(), datum_channels_);
-				CAFFE_CHECK_EQ(data_mean_.height(), datum_height_);
-				CAFFE_CHECK_EQ(data_mean_.width(), datum_width_);
+				CHECK_EQ(data_mean_.num(), 1);
+				CHECK_EQ(data_mean_.channels(), datum_channels_);
+				CHECK_EQ(data_mean_.height(), datum_height_);
+				CHECK_EQ(data_mean_.width(), datum_width_);
 			} else {
 				// Simply initialize an all-empty mean.
 				data_mean_.Reshape(1, datum_channels_, datum_height_, datum_width_);
@@ -326,20 +324,20 @@ namespace caffe {
 			prefetch_rng_.reset();
 		}
 		// Create the thread.
-		//CAFFE_CHECK(!pthread_create(&thread_, NULL, DataLayerPrefetch<Dtype>,
+		//CHECK(!pthread_create(&thread_, NULL, DataLayerPrefetch<Dtype>,
 		//      static_cast<void*>(this))) << "Pthread execution failed.";
 		thread_ = thread(DataLayerPrefetch<Dtype>, reinterpret_cast<void*>(this));
 	}
 
 	template <typename Dtype>
 	void DataLayer<Dtype>::JoinPrefetchThread() {
-		//CAFFE_CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
+		//CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
 		thread_.join();
 	}
 
 	template <typename Dtype>
 	unsigned int DataLayer<Dtype>::PrefetchRand() {
-		CAFFE_CHECK(prefetch_rng_);
+		CHECK(prefetch_rng_);
 		caffe::rng_t* prefetch_rng =
 			static_cast<caffe::rng_t*>(prefetch_rng_->generator());
 		return (*prefetch_rng)();

@@ -41,6 +41,6 @@ int main(int argc, char** argv) {
 
   WriteProtoToBinaryFile(net_param, argv[2]);
 
-  LOG(INFO) << "Wrote upgraded NetParameter binary proto to " << argv[2];
+  LOG(ERROR) << "Wrote upgraded NetParameter binary proto to " << argv[2];
   return !success;
 }

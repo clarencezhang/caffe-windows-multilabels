@@ -2,9 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "leveldb/db.h"
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"
@@ -45,7 +44,7 @@ class DataLayerTest : public ::testing::Test {
     options.create_if_missing = true;
     leveldb::Status status =
         leveldb::DB::Open(options, filename_->c_str(), &db);
-    CAFFE_CHECK(status.ok());
+    CHECK(status.ok());
     for (int i = 0; i < 5; ++i) {
       Datum datum;
       //datum.set_label(i);

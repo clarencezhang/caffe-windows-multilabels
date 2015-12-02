@@ -33,14 +33,14 @@ namespace caffe {
 		// For example, the value at index (n, c, h, w) is physically located at index ((n * K + c) * H + h) * W + w.
 		inline int offset(const int n, const int c = 0, const int h = 0,
 			const int w = 0) const {
-				CAFFE_CHECK_GE(n, 0);
-				CAFFE_CHECK_LE(n, num_);
-				CAFFE_CHECK_GE(channels_, 0);
-				CAFFE_CHECK_LE(c, channels_);
-				CAFFE_CHECK_GE(height_, 0);
-				CAFFE_CHECK_LE(h, height_);
-				CAFFE_CHECK_GE(width_, 0);
-				CAFFE_CHECK_LE(w, width_);
+				CHECK_GE(n, 0);
+				CHECK_LE(n, num_);
+				CHECK_GE(channels_, 0);
+				CHECK_LE(c, channels_);
+				CHECK_GE(height_, 0);
+				CHECK_LE(h, height_);
+				CHECK_GE(width_, 0);
+				CHECK_LE(w, width_);
 				return ((n * channels_ + c) * height_ + h) * width_ + w;
 				
 		}//计算偏移量，因为数据在内存是一维数组形式的，所以需要计算偏移量来访问
@@ -65,12 +65,12 @@ namespace caffe {
 		}
 
 		inline const shared_ptr<SyncedMemory>& data() const {
-			CAFFE_CHECK(data_);
+			CHECK(data_);
 			return data_;
 		}
 
 		inline const shared_ptr<SyncedMemory>& diff() const {
-			CAFFE_CHECK(diff_);
+			CHECK(diff_);
 			return diff_;
 		}
 

@@ -52,6 +52,6 @@ int main(int argc, char** argv) {
   output_proto << net_param_pretty.DebugString();
   output_proto.close();
 
-  LOG(INFO) << "Wrote upgraded NetParameter text proto to " << argv[2];
+  LOG(ERROR) << "Wrote upgraded NetParameter text proto to " << argv[2];
   return !success;
 }

@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -12,19 +11,19 @@ namespace caffe {
 template <typename Dtype>
 void EltwiseProductLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_GE(bottom.size(), 2);
-  //std::cout << std::endl << "Eltwise Product Layer takes at least 2 blobs as input.";
-  CAFFE_CHECK_EQ(top->size(), 1);
-  //std::cout << std::endl << "Eltwise Product Layer takes a single blob as output.";
+  CHECK_GE(bottom.size(), 2) <<
+      "Eltwise Product Layer takes at least 2 blobs as input.";
+  CHECK_EQ(top->size(), 1) <<
+      "Eltwise Product Layer takes a single blob as output.";
   const int num = bottom[0]->num();
   const int channels = bottom[0]->channels();
   const int height = bottom[0]->height();
   const int width = bottom[0]->width();
   for (int i = 1; i < bottom.size(); ++i) {
-    CAFFE_CHECK_EQ(num, bottom[i]->num());
-    CAFFE_CHECK_EQ(channels, bottom[i]->channels());
-    CAFFE_CHECK_EQ(height, bottom[i]->height());
-    CAFFE_CHECK_EQ(width, bottom[i]->width());
+    CHECK_EQ(num, bottom[i]->num());
+    CHECK_EQ(channels, bottom[i]->channels());
+    CHECK_EQ(height, bottom[i]->height());
+    CHECK_EQ(width, bottom[i]->width());
   }
   (*top)[0]->Reshape(num, channels, height, width);
 }

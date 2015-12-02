@@ -2,9 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "leveldb/db.h"
 
 #include "gtest/gtest.h"

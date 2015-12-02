@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -12,19 +11,19 @@ namespace caffe {
 template <typename Dtype>
 void SplitLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_EQ(bottom.size(), 1);// << "Split Layer takes a single blob as input.";
-  CAFFE_CHECK_GE(top->size(), 1);// << "Split Layer takes at least one blob as output.";
+  CHECK_EQ(bottom.size(), 1) << "Split Layer takes a single blob as input.";
+  CHECK_GE(top->size(), 1) << "Split Layer takes at least one blob as output.";
   count_ = bottom[0]->count();
   for (int i = 0; i < top->size(); ++i) {
     // Allow the 0th top blob to be 'in-place', but no others.
     if (i == 0 && (*top)[i] == bottom[0]) {
       continue;
     } else {
-      CAFFE_CHECK_NE((*top)[i], bottom[0]);// << "Only 0th top blob may be in place.";
+      CHECK_NE((*top)[i], bottom[0]) << "Only 0th top blob may be in place.";
     }
     (*top)[i]->Reshape(bottom[0]->num(), bottom[0]->channels(),
                        bottom[0]->height(), bottom[0]->width());
-    CAFFE_CHECK_EQ(count_, (*top)[i]->count());
+    CHECK_EQ(count_, (*top)[i]->count());
   }
 }
 

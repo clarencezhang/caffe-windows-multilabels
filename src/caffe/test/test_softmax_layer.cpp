@@ -3,9 +3,8 @@
 #include <cmath>
 #include <cstring>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"

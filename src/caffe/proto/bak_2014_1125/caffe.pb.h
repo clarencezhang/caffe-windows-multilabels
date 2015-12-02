@@ -107,7 +107,7 @@ enum LayerParameter_LayerType {
   LayerParameter_LayerType_SOFTMAX_LOSS = 21,
   LayerParameter_LayerType_SPLIT = 22,
   LayerParameter_LayerType_TANH = 23,
-  LayerParameter_LayerType_WINDOW_DATA = 24,
+  LayerParameter_LayerType_WINDOW_DATA = 24
 };
 bool LayerParameter_LayerType_IsValid(int value);
 const LayerParameter_LayerType LayerParameter_LayerType_LayerType_MIN = LayerParameter_LayerType_NONE;

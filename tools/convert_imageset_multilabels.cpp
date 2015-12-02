@@ -27,8 +27,6 @@
 #include "caffe/util/io.hpp"
 
 using namespace caffe;  // NOLINT(build/namespaces)
-using namespace std;
-
 using std::pair;
 using std::string;
 using std::endl;
@@ -51,9 +49,9 @@ int convert_imageset_multilabels(int argc, char** argv) {
         "    http://www.image-net.org/download-images\n");
     return 1;
   }
-  LOG(INFO) <<"argv[1]: "<<argv[1]<<std::endl;
-  LOG(INFO) <<"argv[2]: "<<argv[2]<<std::endl;
-  LOG(INFO) <<"argv[3]: "<<argv[3]<<std::endl;
+  std::cout<<"argv[1]: "<<argv[1]<<endl;
+  std::cout<<"argv[2]: "<<argv[2]<<endl;
+  std::cout<<"argv[3]: "<<argv[3]<<endl;
 
   std::ifstream infile(argv[2]);
   if (!infile)  
@@ -64,7 +62,7 @@ int convert_imageset_multilabels(int argc, char** argv) {
 
   //std::vector<std::pair<string, int> > lines;
   std::vector<std::pair<string, std::vector<int> > > lines;
-  std::string filename;
+  string filename;
   int label;
 
   /*
@@ -94,7 +92,7 @@ int convert_imageset_multilabels(int argc, char** argv) {
     std::random_shuffle(lines.begin(), lines.end());
   }
   LOG(INFO) << "A total of " << lines.size() << " images.";
-  std::cout << "A total of " << lines.size() << " images." << std::endl;
+  std::cout << "A total of " << lines.size() << " images." << endl;
   
   leveldb::DB* db;
   leveldb::Options options;
@@ -103,8 +101,8 @@ int convert_imageset_multilabels(int argc, char** argv) {
   //options.write_buffer_size = 268435456;
   LOG(INFO) << "Opening leveldb " << argv[3];
   leveldb::Status status = leveldb::DB::Open(options, argv[3], &db);
-  //CAFFE_CHECK(status.ok()) << "Failed to open leveldb " << argv[3];
-  CAFFE_CHECK(status.ok()); // << "Failed to open leveldb " << argv[3] << ". Is it already existing?";
+  //CHECK(status.ok()) << "Failed to open leveldb " << argv[3];
+  CHECK(status.ok()) << "Failed to open leveldb " << argv[3] << ". Is it already existing?";
   
   string root_folder(argv[1]);
   Datum datum;
@@ -134,7 +132,7 @@ int convert_imageset_multilabels(int argc, char** argv) {
     else 
     {
       const string& data = datum.data();
-      CAFFE_CHECK_EQ(data.size(), data_size); // << "Incorrect data field size " << data.size();
+      CHECK_EQ(data.size(), data_size) << "Incorrect data field size " << data.size();
     }
     
     // get the value & sequential
@@ -146,7 +144,7 @@ int convert_imageset_multilabels(int argc, char** argv) {
 	//datum.Clear();
 	
 	if (++count % 1000 == 0) {
-	  std::cout << "Processed " << count << " files." << std::endl;
+	  std::cout << "Processed " << count << " files." << endl;
     }
 	
 	// disable batch collection
@@ -155,8 +153,8 @@ int convert_imageset_multilabels(int argc, char** argv) {
 
 	if (++count % 1000 == 0) {
       db->Write(leveldb::WriteOptions(), batch);
-      //LOG(INFO) << "Processed " << count << " files."<< std::endl;
-	  std::cout << "Processed " << count << " files." << std::endl;
+      //LOG(ERROR) << "Processed " << count << " files."<< endl;
+	  std::cout << "Processed " << count << " files." << endl;
       delete batch;
       batch = new leveldb::WriteBatch();
     }
@@ -173,12 +171,12 @@ int convert_imageset_multilabels(int argc, char** argv) {
   // write the last batch
   if (count % 1000 != 0) {
     db->Write(leveldb::WriteOptions(), batch);
-    //LOG(INFO) << "Processed " << count << " files.";
-	std::cout << "Processed " << count << " files." << std::endl;
+    //LOG(ERROR) << "Processed " << count << " files.";
+	std::cout << "Processed " << count << " files." << endl;
   }
   */
 
-  LOG(INFO) <<"Note!!! " << lines.size() << " images convert to levelDB done...... " << std::endl;
+  std::cout <<"Note!!! " << lines.size() << " images convert to levelDB done...... " << endl;
   
   delete batch;
   delete db;

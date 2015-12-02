@@ -2,9 +2,8 @@
 
 #include <cstring>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "gtest/gtest.h"
 #include "caffe/common.hpp"
 #include "caffe/syncedmem.hpp"
@@ -71,7 +70,7 @@ TEST_F(SyncedMemoryTest, TestGPUWrite) {
   SyncedMemory mem(10);
   void* gpu_data = mem.mutable_gpu_data();
   EXPECT_EQ(mem.head(), SyncedMemory::HEAD_AT_GPU);
-  //CUDA_CHECK(cudaMemset(gpu_data, 1, mem.size()));
+  CUDA_CHECK(cudaMemset(gpu_data, 1, mem.size()));
   const void* cpu_data = mem.cpu_data();
   for (int i = 0; i < mem.size(); ++i) {
     EXPECT_EQ((reinterpret_cast<const char*>(cpu_data))[i], 1);
@@ -80,7 +79,7 @@ TEST_F(SyncedMemoryTest, TestGPUWrite) {
 
   gpu_data = mem.mutable_gpu_data();
   EXPECT_EQ(mem.head(), SyncedMemory::HEAD_AT_GPU);
-  //CUDA_CHECK(cudaMemset(gpu_data, 2, mem.size()));
+  CUDA_CHECK(cudaMemset(gpu_data, 2, mem.size()));
   cpu_data = mem.cpu_data();
   for (int i = 0; i < mem.size(); ++i) {
     EXPECT_EQ((reinterpret_cast<const char*>(cpu_data))[i], 2);

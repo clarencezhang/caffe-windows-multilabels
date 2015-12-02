@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cfloat>
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -16,8 +15,8 @@ namespace caffe {
 template <typename Dtype>
 void SoftmaxWithLossLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_EQ(bottom.size(), 2); //<< "SoftmaxLoss Layer takes two blobs as input.";
-  CAFFE_CHECK_EQ(top->size(), 0); // << "SoftmaxLoss Layer takes no blob as output.";
+  CHECK_EQ(bottom.size(), 2) << "SoftmaxLoss Layer takes two blobs as input.";
+  CHECK_EQ(top->size(), 0) << "SoftmaxLoss Layer takes no blob as output.";
   
   softmax_bottom_vec_.clear();
   softmax_bottom_vec_.push_back(bottom[0]);
@@ -41,13 +40,13 @@ Dtype SoftmaxWithLossLayer<Dtype>::Forward_cpu(
   int num = prob_.num();
   int dim = prob_.count() / num;
 
-  int prob_size = prob_.channels();  
-  CAFFE_CHECK_EQ(dim, prob_size); //<< "output of prob size is NOT the same.";
+  int prob_channels = prob_.channels();  
+  CHECK_EQ(dim, prob_channels) << "output of prob size is NOT the same.";
   
   int label_num = bottom[1]->num();
   int label_size = bottom[1]->channels();
 
-  CAFFE_CHECK_EQ(label_size, prob_size); //<< "output of prob size is NOT the same as label size.";
+  CHECK_EQ(label_size, prob_channels) << "output of prob size is NOT the same as label size.";
 
   // disable by multiple labels handling process
   /*
@@ -93,13 +92,13 @@ void SoftmaxWithLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
   int num = prob_.num();
   int dim = prob_.count() / num;
 
-  int prob_size = prob_.channels();  
-  CAFFE_CHECK_EQ(dim, prob_size); //<< "output of prob size is NOT the same.";
+  int prob_channels = prob_.channels();  
+  CHECK_EQ(dim, prob_channels) << "output of prob size is NOT the same.";
   
   int label_num = (*bottom)[1]->num();
   int label_size = (*bottom)[1]->channels();
   
-  CAFFE_CHECK_EQ(label_size, prob_size); //<< "output of prob size is NOT the same as label size.";
+  CHECK_EQ(label_size, prob_channels) << "output of prob size is NOT the same as label size.";
 
   for (int i = 0; i < num; ++i) {
   	int label_index = 0;

@@ -1,10 +1,9 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <cstring>
-#include <iostream>
 
-//#include "cuda_runtime.h"
-//#include "cublas_v2.h"
+#include "cuda_runtime.h"
+#include "cublas_v2.h"
 
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"

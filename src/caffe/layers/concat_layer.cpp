@@ -1,27 +1,24 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
 #include "caffe/util/math_functions.hpp"
-
 
 namespace caffe {
 
 template <typename Dtype>
 void ConcatLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_GT(bottom.size(), 1); 
-    //std::cout << std::endl << "Concat Layer takes at least two blobs as input." << std::endl;
-  CAFFE_CHECK_EQ(top->size(), 1); 
-    //std::cout << std::endl << "Concat Layer takes a single blob as output." << std::endl;
+  CHECK_GT(bottom.size(), 1) <<
+    "Concat Layer takes at least two blobs as input.";
+  CHECK_EQ(top->size(), 1) <<
+    "Concat Layer takes a single blob as output.";
   concat_dim_ = this->layer_param_.concat_param().concat_dim();
-  CAFFE_CHECK_GE(concat_dim_, 0); 
-    //std::cout << std::endl << "concat_dim should be >= 0" << std::endl;
-  CAFFE_CHECK_LE(concat_dim_, 1);  
-    //std::cout << std::endl << "For now concat_dim <=1, it can only concat num and channels" << std::endl;
+  CHECK_GE(concat_dim_, 0) << "concat_dim should be >= 0";
+  CHECK_LE(concat_dim_, 1) <<
+    "For now concat_dim <=1, it can only concat num and channels";
   // Intialize with the first blob
   count_ = bottom[0]->count();
   num_ = bottom[0]->num();
@@ -41,7 +38,7 @@ void ConcatLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
     }
   }
   (*top)[0]->Reshape(num_, channels_, height_, width_);
-  CAFFE_CHECK_EQ(count_, (*top)[0]->count());
+  CHECK_EQ(count_, (*top)[0]->count());
 }
 
 template <typename Dtype>

@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "caffe/net.hpp"
 #include "caffe/proto/caffe.pb.h"
@@ -40,14 +39,14 @@ namespace caffe {
 		}
 		
 		// Scaffolding code
-		LOG(INFO) << "Creating training net." << std::endl;
+		LOG(INFO) << "Creating training net.";
 		net_.reset(new Net<Dtype>(param_.train_net()));
 		
 		if (param_.has_test_net()) {
-			LOG(INFO) << "Creating testing net." << std::endl;
+			LOG(INFO) << "Creating testing net.";
 			test_net_.reset(new Net<Dtype>(param_.test_net()));
-			CAFFE_CHECK_GT(param_.test_iter(), 0);
-			CAFFE_CHECK_GT(param_.test_interval(), 0);
+			CHECK_GT(param_.test_iter(), 0);
+			CHECK_GT(param_.test_interval(), 0);
 		}
 		LOG(INFO) << "Solver scaffolding done.";
 	}
@@ -58,7 +57,7 @@ namespace caffe {
 		Caffe::set_mode(Caffe::Brew(param_.solver_mode()));
 		if (param_.solver_mode() == SolverParameter_SolverMode_GPU &&
 			param_.has_device_id()) {
-				//Caffe::SetDevice(param_.device_id());
+				Caffe::SetDevice(param_.device_id());
 		}
 		Caffe::set_phase(Caffe::TRAIN);
 		LOG(INFO) << "Solving " << net_->name();
@@ -109,11 +108,7 @@ namespace caffe {
 		LOG(INFO) << "Iteration " << iter_ << ", Testing net";
 		// We need to set phase to test before running.
 		Caffe::set_phase(Caffe::TEST);
-		//CHECK_NOTNULL(test_net_.get())->ShareTrainedLayersWith(net_.get());
-		if (test_net_.get())
-		{
-			(test_net_.get())->ShareTrainedLayersWith(net_.get());
-		}
+		CHECK_NOTNULL(test_net_.get())->ShareTrainedLayersWith(net_.get());
 		vector<Dtype> test_score;
 		vector<Blob<Dtype>*> bottom_vec;
 		Dtype loss = 0;
@@ -257,7 +252,6 @@ namespace caffe {
 		Dtype weight_decay = this->param_.weight_decay();
 		switch (Caffe::mode()) {
 		case Caffe::CPU:
-        case Caffe::GPU:    
 			for (int param_id = 0; param_id < net_params.size(); ++param_id) {
 				// Compute the value to history, and then copy them to the blob's diff.
 				Dtype local_rate = rate * net_params_lr[param_id];
@@ -278,8 +272,6 @@ namespace caffe {
 					net_params[param_id]->mutable_cpu_diff());
 			}
 			break;
-            
-        /* 
 		case Caffe::GPU:
 			for (int param_id = 0; param_id < net_params.size(); ++param_id) {
 				// Compute the value to history, and then copy them to the blob's diff.
@@ -300,9 +292,7 @@ namespace caffe {
 					history_[param_id]->gpu_data(),
 					net_params[param_id]->mutable_gpu_diff());
 			}
-			
 			break;
-		*/	
 		default:
 			LOG(FATAL) << "Unknown caffe mode: " << Caffe::mode();
 		}
@@ -320,8 +310,8 @@ namespace caffe {
 
 	template <typename Dtype>
 	void SGDSolver<Dtype>::RestoreSolverState(const SolverState& state) {
-		CAFFE_CHECK_EQ(state.history_size(), history_.size());
-			// << "Incorrect length of history blobs.";
+		CHECK_EQ(state.history_size(), history_.size())
+			<< "Incorrect length of history blobs.";
 		LOG(INFO) << "SGDSolver: restoring history";
 		for (int i = 0; i < history_.size(); ++i) {
 			history_[i]->FromProto(state.history(i));

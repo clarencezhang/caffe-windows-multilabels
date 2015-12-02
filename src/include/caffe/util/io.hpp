@@ -30,7 +30,7 @@ inline bool ReadProtoFromTextFile(const string& filename, Message* proto) {
 }
 
 inline void ReadProtoFromTextFileOrDie(const char* filename, Message* proto) {
-  CAFFE_CHECK(ReadProtoFromTextFile(filename, proto));
+  CHECK(ReadProtoFromTextFile(filename, proto));
 }
 
 inline void ReadProtoFromTextFileOrDie(const string& filename, Message* proto) {
@@ -49,7 +49,7 @@ inline bool ReadProtoFromBinaryFile(const string& filename, Message* proto) {
 }
 
 inline void ReadProtoFromBinaryFileOrDie(const char* filename, Message* proto) {
-  CAFFE_CHECK(ReadProtoFromBinaryFile(filename, proto));
+  CHECK(ReadProtoFromBinaryFile(filename, proto));
 }
 
 inline void ReadProtoFromBinaryFileOrDie(const string& filename,

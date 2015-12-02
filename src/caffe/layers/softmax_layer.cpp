@@ -2,7 +2,6 @@
 //
 #include <algorithm>
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -15,8 +14,9 @@ namespace caffe {
 	template <typename Dtype>
 	void SoftmaxLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 1);// << "Softmax Layer takes a single blob as input.";
-			CAFFE_CHECK_EQ(top->size(), 1);// << "Softmax Layer takes a single blob as output.";
+			CHECK_EQ(bottom.size(), 1) << "Softmax Layer takes a single blob as input.";
+			CHECK_EQ(top->size(), 1) << "Softmax Layer takes a single blob as output.";
+			
 			// 输出分配空间，初始化
 			(*top)[0]->Reshape(bottom[0]->num(), bottom[0]->channels(),
 				bottom[0]->height(), bottom[0]->width());

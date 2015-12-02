@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -12,10 +11,10 @@ namespace caffe {
 template <typename Dtype>
 void LRNLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_EQ(bottom.size(), 1); // <<
-      // "Local Response Normalization Layer takes a single blob as input.";
-  CAFFE_CHECK_EQ(top->size(), 1); // <<
-      // "Local Response Normalization Layer takes a single blob as output.";
+  CHECK_EQ(bottom.size(), 1) <<
+      "Local Response Normalization Layer takes a single blob as input.";
+  CHECK_EQ(top->size(), 1) <<
+      "Local Response Normalization Layer takes a single blob as output.";
   num_ = bottom[0]->num();
   channels_ = bottom[0]->channels();
   height_ = bottom[0]->height();
@@ -48,10 +47,10 @@ void LRNLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       square_param.mutable_power_param()->set_power(Dtype(2));
       square_layer_.reset(new PowerLayer<Dtype>(square_param));
       square_layer_->SetUp(square_bottom_vec_, &square_top_vec_);
-      CAFFE_CHECK_EQ(square_output_.num(), num_);
-      CAFFE_CHECK_EQ(square_output_.channels(), channels_);
-      CAFFE_CHECK_EQ(square_output_.height(), height_);
-      CAFFE_CHECK_EQ(square_output_.width(), width_);
+      CHECK_EQ(square_output_.num(), num_);
+      CHECK_EQ(square_output_.channels(), channels_);
+      CHECK_EQ(square_output_.height(), height_);
+      CHECK_EQ(square_output_.width(), width_);
       // Set up pool_layer_ to sum over square neighborhoods of the input.
       pool_top_vec_.clear();
       pool_top_vec_.push_back(&pool_output_);
@@ -62,10 +61,10 @@ void LRNLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       pool_param.mutable_pooling_param()->set_kernel_size(size_);
       pool_layer_.reset(new PoolingLayer<Dtype>(pool_param));
       pool_layer_->SetUp(square_top_vec_, &pool_top_vec_);
-      CAFFE_CHECK_EQ(pool_output_.num(), num_);
-      CAFFE_CHECK_EQ(pool_output_.channels(), channels_);
-      CAFFE_CHECK_EQ(pool_output_.height(), height_);
-      CAFFE_CHECK_EQ(pool_output_.width(), width_);
+      CHECK_EQ(pool_output_.num(), num_);
+      CHECK_EQ(pool_output_.channels(), channels_);
+      CHECK_EQ(pool_output_.height(), height_);
+      CHECK_EQ(pool_output_.width(), width_);
       // Set up power_layer_ to compute (1 + alpha_/N^2 s)^-beta_, where s is
       // the sum of a squared neighborhood (the output of pool_layer_).
       power_top_vec_.clear();
@@ -76,10 +75,10 @@ void LRNLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       power_param.mutable_power_param()->set_shift(Dtype(1));
       power_layer_.reset(new PowerLayer<Dtype>(power_param));
       power_layer_->SetUp(pool_top_vec_, &power_top_vec_);
-      CAFFE_CHECK_EQ(power_output_.num(), num_);
-      CAFFE_CHECK_EQ(power_output_.channels(), channels_);
-      CAFFE_CHECK_EQ(power_output_.height(), height_);
-      CAFFE_CHECK_EQ(power_output_.width(), width_);
+      CHECK_EQ(power_output_.num(), num_);
+      CHECK_EQ(power_output_.channels(), channels_);
+      CHECK_EQ(power_output_.height(), height_);
+      CHECK_EQ(power_output_.width(), width_);
       // Set up a product_layer_ to compute outputs by multiplying inputs by the
       // inverse demoninator computed by the power layer.
       product_bottom_vec_.clear();
@@ -88,10 +87,10 @@ void LRNLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       LayerParameter product_param;
       product_layer_.reset(new EltwiseProductLayer<Dtype>(product_param));
       product_layer_->SetUp(product_bottom_vec_, top);
-      CAFFE_CHECK_EQ((*top)[0]->num(), num_);
-      CAFFE_CHECK_EQ((*top)[0]->channels(), channels_);
-      CAFFE_CHECK_EQ((*top)[0]->height(), height_);
-      CAFFE_CHECK_EQ((*top)[0]->width(), width_);
+      CHECK_EQ((*top)[0]->num(), num_);
+      CHECK_EQ((*top)[0]->channels(), channels_);
+      CHECK_EQ((*top)[0]->height(), height_);
+      CHECK_EQ((*top)[0]->width(), width_);
     }
     break;
   default:

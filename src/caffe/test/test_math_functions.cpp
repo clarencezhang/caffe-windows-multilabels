@@ -5,7 +5,6 @@
 #include <climits>
 #include <cmath>  // for std::fabs
 #include <cstdlib>  // for rand_r
-#include <iostream>
 
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"

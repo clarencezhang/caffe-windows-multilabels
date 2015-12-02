@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cfloat>
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -20,13 +19,13 @@ namespace caffe {
 	template <typename Dtype>
 	void MultinomialLogisticLossLayer<Dtype>::SetUp(
 		const vector<Blob<Dtype>*>& bottom, vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 2); // << "Loss Layer takes two blobs as input.";
-			CAFFE_CHECK_EQ(top->size(), 0); // << "Loss Layer takes no output.";
-			CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
-				// << "The data and label should have the same number.";
-			CAFFE_CHECK_EQ(bottom[1]->channels(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->height(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->width(), 1);
+			CHECK_EQ(bottom.size(), 2) << "Loss Layer takes two blobs as input.";
+			CHECK_EQ(top->size(), 0) << "Loss Layer takes no output.";
+			CHECK_EQ(bottom[0]->num(), bottom[1]->num())
+				<< "The data and label should have the same number.";
+			CHECK_EQ(bottom[1]->channels(), 1);
+			CHECK_EQ(bottom[1]->height(), 1);
+			CHECK_EQ(bottom[1]->width(), 1);
 	}
 
 	template <typename Dtype>
@@ -66,20 +65,20 @@ namespace caffe {
 	template <typename Dtype>
 	void InfogainLossLayer<Dtype>::SetUp(
 		const vector<Blob<Dtype>*>& bottom, vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 2); // << "Loss Layer takes two blobs as input.";
-			CAFFE_CHECK_EQ(top->size(), 0); // << "Loss Layer takes no output.";
-			CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
-				// << "The data and label should have the same number.";
-			CAFFE_CHECK_EQ(bottom[1]->channels(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->height(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->width(), 1);
+			CHECK_EQ(bottom.size(), 2) << "Loss Layer takes two blobs as input.";
+			CHECK_EQ(top->size(), 0) << "Loss Layer takes no output.";
+			CHECK_EQ(bottom[0]->num(), bottom[1]->num())
+				<< "The data and label should have the same number.";
+			CHECK_EQ(bottom[1]->channels(), 1);
+			CHECK_EQ(bottom[1]->height(), 1);
+			CHECK_EQ(bottom[1]->width(), 1);
 			BlobProto blob_proto;
 			ReadProtoFromBinaryFile(this->layer_param_.infogain_loss_param().source(),
 				&blob_proto);
 			infogain_.FromProto(blob_proto);
-			CAFFE_CHECK_EQ(infogain_.num(), 1);
-			CAFFE_CHECK_EQ(infogain_.channels(), 1);
-			CAFFE_CHECK_EQ(infogain_.height(), infogain_.width());
+			CHECK_EQ(infogain_.num(), 1);
+			CHECK_EQ(infogain_.channels(), 1);
+			CHECK_EQ(infogain_.height(), infogain_.width());
 	}
 
 
@@ -91,7 +90,7 @@ namespace caffe {
 			const Dtype* infogain_mat = infogain_.cpu_data();
 			int num = bottom[0]->num();
 			int dim = bottom[0]->count() / bottom[0]->num();
-			CAFFE_CHECK_EQ(infogain_.height(), dim);
+			CHECK_EQ(infogain_.height(), dim);
 			Dtype loss = 0;
 			for (int i = 0; i < num; ++i) {
 				int label = static_cast<int>(bottom_label[i]);
@@ -113,7 +112,7 @@ namespace caffe {
 			Dtype* bottom_diff = (*bottom)[0]->mutable_cpu_diff();
 			int num = (*bottom)[0]->num();
 			int dim = (*bottom)[0]->count() / (*bottom)[0]->num();
-			CAFFE_CHECK_EQ(infogain_.height(), dim);
+			CHECK_EQ(infogain_.height(), dim);
 			for (int i = 0; i < num; ++i) {
 				int label = static_cast<int>(bottom_label[i]);
 				for (int j = 0; j < dim; ++j) {
@@ -127,25 +126,15 @@ namespace caffe {
 	template <typename Dtype>
 	void EuclideanLossLayer<Dtype>::SetUp(
 		const vector<Blob<Dtype>*>& bottom, vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 2); // << "Loss Layer takes two blobs as input.";
-			//CAFFE_CHECK_EQ(top->size(), 0); // << "Loss Layer takes no as output.";
-            CAFFE_CHECK_LE(top->size(), 1); // << modified to accomodate the regression case with multiple lables
-            CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
-				// << "The data and label should have the same number.";
-			CAFFE_CHECK_EQ(bottom[0]->channels(), bottom[1]->channels());
-			CAFFE_CHECK_EQ(bottom[0]->height(), bottom[1]->height());
-			CAFFE_CHECK_EQ(bottom[0]->width(), bottom[1]->width());
-            
+			CHECK_EQ(bottom.size(), 2) << "Loss Layer takes two blobs as input.";
+			CHECK_EQ(top->size(), 0) << "Loss Layer takes no as output.";
+			CHECK_EQ(bottom[0]->num(), bottom[1]->num())
+				<< "The data and label should have the same number.";
+			CHECK_EQ(bottom[0]->channels(), bottom[1]->channels());
+			CHECK_EQ(bottom[0]->height(), bottom[1]->height());
+			CHECK_EQ(bottom[0]->width(), bottom[1]->width());
 			difference_.Reshape(bottom[0]->num(), bottom[0]->channels(),
 				bottom[0]->height(), bottom[0]->width());
-
-            // EuclideanLossLayer allows computing loss accuracy for each sample item in TEST mode. 
-            // This time, we will need to initialize the top blob.
-            if (top->size() > 0)
-            {
-                //(*top)[0]->Reshape(bottom[0]->num(), 1, 1, 1);
-                (*top)[0]->Reshape(1, 1, 1, 1);
-            }
 	}
 
 	template <typename Dtype>
@@ -153,58 +142,10 @@ namespace caffe {
 		vector<Blob<Dtype>*>* top) {
 			int count = bottom[0]->count();
 			int num = bottom[0]->num();
-            int dim = bottom[0]->count() / bottom[0]->num();
-
 			caffe_sub(count, bottom[0]->cpu_data(), bottom[1]->cpu_data(),
 				difference_.mutable_cpu_data());
-            
 			Dtype loss = caffe_cpu_dot(
 				count, difference_.cpu_data(), difference_.cpu_data()) / num / Dtype(2);
-
-            // During TEST mode, compute edclidean loss accuracy and record them every iteration
-            if (top->size() > 0)
-            {
-                #if 0
-				Dtype* top_loss = (*top)[0]->mutable_cpu_data();
-				Dtype* diff_data = difference_.mutable_cpu_data();
-                
-    			for (int i = 0; i < num; ++i) {
-    				// loss
-    				double item_loss = 0.0;    				
-    				for (int j = 0; j < dim; ++j) {
-    					item_loss += sqrt(diff_data[i*dim + j] * diff_data[i*dim + j]);
-    				}
-                    top_loss[i] = Dtype(item_loss);
-    			}
-                #endif
-
-				Dtype* diff_data = difference_.mutable_cpu_data();
-                Dtype accuracy = 0;
-                Dtype face_bouding_box_length = 39.0;
-                
-    			for (int i = 0; i < num; ++i) {
-    				double dist_error = 0.0;
-                    bool detect_flag = true;
-                    
-    				for (int j = 0; j < dim/2; ++j) {                        
-    					dist_error = sqrt((diff_data[i*dim+j*2] * diff_data[i*dim+j*2]) + (diff_data[i*dim+j*2+1] * diff_data[i*dim+j*2+1]));
-
-                        if (dist_error/face_bouding_box_length > 0.05)
-                        {
-                            detect_flag = false;
-                            break;
-                        }
-    				}
-
-                    if (detect_flag)
-                    {
-                        ++accuracy;
-                    }                    
-    			}
-
-                (*top)[0]->mutable_cpu_data()[0] = accuracy / num;
-            }
-
 			return loss;
 	}
 
@@ -221,15 +162,15 @@ namespace caffe {
 	template <typename Dtype>
 	void AccuracyLayer<Dtype>::SetUp(
 		const vector<Blob<Dtype>*>& bottom, vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 2); // << "Accuracy Layer takes two blobs as input.";
-			CAFFE_CHECK_EQ(top->size(), 1); // << "Accuracy Layer takes 1 output.";
+			CHECK_EQ(bottom.size(), 2) << "Accuracy Layer takes two blobs as input.";
+			CHECK_EQ(top->size(), 1) << "Accuracy Layer takes 1 output.";
 			
-			CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
-				// << "The data and label should have the same number.";
+			CHECK_EQ(bottom[0]->num(), bottom[1]->num())
+				<< "The data and label should have the same number.";
 			// disable by multiple label channels
-			//CAFFE_CHECK_EQ(bottom[1]->channels(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->height(), 1);
-			CAFFE_CHECK_EQ(bottom[1]->width(), 1);
+			//CHECK_EQ(bottom[1]->channels(), 1);
+			CHECK_EQ(bottom[1]->height(), 1);
+			CHECK_EQ(bottom[1]->width(), 1);
 			
 			(*top)[0]->Reshape(1, 2, 1, 1);
 	}
@@ -249,12 +190,12 @@ namespace caffe {
 			int dim = bottom[0]->count() / bottom[0]->num();
 
 			int prob_size = bottom[0]->channels();  
-			CAFFE_CHECK_EQ(dim, prob_size); // << "output of prob(bottom[0]) size is NOT the same.";
+			CHECK_EQ(dim, prob_size) << "output of prob(bottom[0]) size is NOT the same.";
 
 			int label_num = bottom[1]->num();
 			int label_size = bottom[1]->channels();
 
-			CAFFE_CHECK_EQ(label_size, prob_size); // << "output of prob size is NOT the same as label size.";
+			CHECK_EQ(label_size, prob_size) << "output of prob size is NOT the same as label size.";
 
 			// disable by multiple channel labels handling process
 			/*
@@ -320,8 +261,8 @@ namespace caffe {
 	template <typename Dtype>
 	void HingeLossLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 2); // << "Hinge Loss Layer takes two blobs as input.";
-			CAFFE_CHECK_EQ(top->size(), 0); // << "Hinge Loss Layer takes no output.";
+			CHECK_EQ(bottom.size(), 2) << "Hinge Loss Layer takes two blobs as input.";
+			CHECK_EQ(top->size(), 0) << "Hinge Loss Layer takes no output.";
 	}
 
 	template <typename Dtype>

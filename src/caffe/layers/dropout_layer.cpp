@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/common.hpp"
 #include "caffe/util/math_functions.hpp"
@@ -18,8 +17,8 @@ void DropoutLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
   // Set up the cache for random number generation
   rand_vec_.reset(new SyncedMemory(bottom[0]->count() * sizeof(int)));
   threshold_ = this->layer_param_.dropout_param().dropout_ratio();
-  CAFFE_DCHECK(threshold_ > 0.);
-  CAFFE_DCHECK(threshold_ < 1.);
+  DCHECK(threshold_ > 0.);
+  DCHECK(threshold_ < 1.);
   scale_ = 1. / (1. - threshold_);
   uint_thres_ = static_cast<unsigned int>(UINT_MAX * threshold_);
 }
@@ -47,7 +46,7 @@ template <typename Dtype>
 void DropoutLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
     const bool propagate_down,
     vector<Blob<Dtype>*>* bottom) {
-  CAFFE_CHECK(Caffe::phase() == Caffe::TRAIN);
+  CHECK(Caffe::phase() == Caffe::TRAIN);
   if (propagate_down) {
     const Dtype* top_diff = top[0]->cpu_diff();
     Dtype* bottom_diff = (*bottom)[0]->mutable_cpu_diff();

@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -14,8 +13,8 @@ namespace caffe {
 	template <typename Dtype>
 	void ConvolutionLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 1); // << "Conv Layer takes a single blob as input.";
-			CAFFE_CHECK_EQ(top->size(), 1); // << "Conv Layer takes a single blob as output.";
+			CHECK_EQ(bottom.size(), 1) << "Conv Layer takes a single blob as input.";
+			CHECK_EQ(top->size(), 1) << "Conv Layer takes a single blob as output.";
 			kernel_size_ = this->layer_param_.convolution_param().kernel_size();
 			stride_ = this->layer_param_.convolution_param().stride();
 			group_ = this->layer_param_.convolution_param().group();
@@ -27,8 +26,8 @@ namespace caffe {
 			width_ = bottom[0]->width();
 			
 			num_output_ = this->layer_param_.convolution_param().num_output();			
-			CAFFE_CHECK_GT(num_output_, 0);
-			CAFFE_CHECK_EQ(channels_ % group_, 0);
+			CHECK_GT(num_output_, 0);
+			CHECK_EQ(channels_ % group_, 0);
 			
 			// The im2col result buffer would only hold one image at a time to avoid
 			// overly large memory usage.
@@ -39,8 +38,8 @@ namespace caffe {
 				1, channels_ * kernel_size_ * kernel_size_, height_out, width_out);
 			
 			// Set the parameters
-			CAFFE_CHECK_EQ(num_output_ % group_, 0);
-				// << "Number of output should be multiples of group.";
+			CHECK_EQ(num_output_ % group_, 0)
+				<< "Number of output should be multiples of group.";
 			bias_term_ = this->layer_param_.convolution_param().bias_term();
 			
 			// Figure out the dimensions for individual gemms.

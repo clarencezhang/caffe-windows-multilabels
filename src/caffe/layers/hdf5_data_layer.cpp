@@ -11,7 +11,6 @@ TODO:
 #include <string>
 #include <vector>
 #include <fstream>  // NOLINT(readability/streams)
-#include <iostream>
 
 #include "hdf5.h"
 #include "hdf5_hl.h"
@@ -46,15 +45,15 @@ void HDF5DataLayer<Dtype>::LoadHDF5FileData(const char* filename) {
     file_id, "label", MIN_LABEL_DIM, MAX_LABEL_DIM, &label_blob_);
 
   herr_t status = H5Fclose(file_id);
-  CAFFE_CHECK_EQ(data_blob_.num(), label_blob_.num());
+  CHECK_EQ(data_blob_.num(), label_blob_.num());
   LOG(INFO) << "Successully loaded " << data_blob_.num() << " rows";
 }
 
 template <typename Dtype>
 void HDF5DataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_EQ(bottom.size(), 0); // << "HDF5DataLayer takes no input blobs.";
-  CAFFE_CHECK_EQ(top->size(), 2); // << "HDF5DataLayer takes two blobs as output.";
+  CHECK_EQ(bottom.size(), 0) << "HDF5DataLayer takes no input blobs.";
+  CHECK_EQ(top->size(), 2) << "HDF5DataLayer takes two blobs as output.";
 
   // Read the source to parse the filenames.
   const string& source = this->layer_param_.hdf5_data_param().source();

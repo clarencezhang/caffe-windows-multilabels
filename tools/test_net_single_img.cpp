@@ -1,17 +1,16 @@
 // 测试单张图片
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 #include <cstring>
 #include <cstdlib>
 #include <vector>
-#include <iostream>
 
 #include "opencvlib.h"
 #include "caffe/caffe.hpp"
 
-
 using namespace caffe;  // NOLINT(build/namespaces)
+
 
 
 // 4个参数
@@ -21,7 +20,7 @@ using namespace caffe;  // NOLINT(build/namespaces)
 // [CPU/GPU]			CPU
 int main_test_net_single_img(int argc, char** argv) {
 	if (argc < 4 || argc > 6) {
-		LOG(INFO) << "test_net net_proto pretrained_net_proto iterations "
+		LOG(ERROR) << "test_net net_proto pretrained_net_proto iterations "
 			<< "[CPU/GPU] [Device ID]";
 		return 1;
 	}
@@ -35,10 +34,10 @@ int main_test_net_single_img(int argc, char** argv) {
 		if (argc == 6) {
 			device_id = atoi(argv[5]);
 		}
-		//Caffe::SetDevice(device_id);
-		LOG(INFO) << "Using GPU #" << device_id;
+		Caffe::SetDevice(device_id);
+		LOG(ERROR) << "Using GPU #" << device_id;
 	} else {
-		LOG(INFO) << "Using CPU";
+		LOG(ERROR) << "Using CPU";
 		Caffe::set_mode(Caffe::CPU);
 	}
 
@@ -46,7 +45,7 @@ int main_test_net_single_img(int argc, char** argv) {
 	caffe_test_net.CopyTrainedLayersFrom(argv[2]);
 
 	// song add
-	const vector<boost::shared_ptr<Layer<float> > > &layers = caffe_test_net.layers();
+	const vector<shared_ptr<Layer<float> > > &layers = caffe_test_net.layers();
 	MemoryDataLayer<float>* memoryDataLayer = static_cast<MemoryDataLayer<float>*>(&(*layers[0])); 
 	
 	cv::Mat img = cv::imread("test_img\\3568-3900-5792-8635_1_13.jpg", IMREAD_GRAYSCALE);
@@ -75,22 +74,22 @@ int main_test_net_single_img(int argc, char** argv) {
 			maxval = pResult[j];
 			max_id = j;
 		}
-		LOG(INFO) << j << " prob:" << pResult[j] << std::endl;
+		LOG(ERROR) << j << " prob:" << pResult[j] << std::endl;
 	}
 	
 	
 
 	/*int total_iter = atoi(argv[3]);
-	LOG(INFO) << "Running " << total_iter << " iterations.";
+	LOG(ERROR) << "Running " << total_iter << " iterations.";
 
 	double test_accuracy = 0;
 	for (int i = 0; i < total_iter; ++i) {
 		const vector<Blob<float>*>& result = caffe_test_net.ForwardPrefilled();
 		test_accuracy += result[0]->cpu_data()[0];
-		LOG(INFO) << "Batch " << i << ", accuracy: " << result[0]->cpu_data()[0];
+		LOG(ERROR) << "Batch " << i << ", accuracy: " << result[0]->cpu_data()[0];
 	}
 	test_accuracy /= total_iter;
-	LOG(INFO) << "Test accuracy: " << test_accuracy;*/
+	LOG(ERROR) << "Test accuracy: " << test_accuracy;*/
 
 	return 0;
 }

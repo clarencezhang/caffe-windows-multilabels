@@ -37,12 +37,12 @@ class ConstantFiller : public Filler<Dtype> {
     Dtype* data = blob->mutable_cpu_data();
     const int count = blob->count();
     const Dtype value = this->filler_param_.value();
-    CAFFE_CHECK(count);
+    CHECK(count);
     for (int i = 0; i < count; ++i) {
       data[i] = value;
     }
-    CAFFE_CHECK_EQ(this->filler_param_.sparse(), -1);
-        // << "Sparsity not supported by this Filler.";
+    CHECK_EQ(this->filler_param_.sparse(), -1)
+         << "Sparsity not supported by this Filler.";
   }
 };
 
@@ -52,11 +52,11 @@ class UniformFiller : public Filler<Dtype> {
   explicit UniformFiller(const FillerParameter& param)
       : Filler<Dtype>(param) {}
   virtual void Fill(Blob<Dtype>* blob) {
-    CAFFE_CHECK(blob->count());
+    CHECK(blob->count());
     caffe_rng_uniform<Dtype>(blob->count(), Dtype(this->filler_param_.min()),
         Dtype(this->filler_param_.max()), blob->mutable_cpu_data());
-    CAFFE_CHECK_EQ(this->filler_param_.sparse(), -1);
-       //  << "Sparsity not supported by this Filler.";
+    CHECK_EQ(this->filler_param_.sparse(), -1)
+         << "Sparsity not supported by this Filler.";
   }
 };
 
@@ -67,18 +67,18 @@ class GaussianFiller : public Filler<Dtype> {
       : Filler<Dtype>(param) {}
   virtual void Fill(Blob<Dtype>* blob) {
     Dtype* data = blob->mutable_cpu_data();
-    CAFFE_CHECK(blob->count());
+    CHECK(blob->count());
     caffe_rng_gaussian<Dtype>(blob->count(), Dtype(this->filler_param_.mean()),
         Dtype(this->filler_param_.std()), blob->mutable_cpu_data());
     int sparse = this->filler_param_.sparse();
-    CAFFE_CHECK_GE(sparse, -1);
+    CHECK_GE(sparse, -1);
     if (sparse >= 0) {
       // Sparse initialization is implemented for "weight" blobs; i.e. matrices.
       // These have num == channels == 1; height is number of inputs; width is
       // number of outputs.  The 'sparse' variable specifies the mean number
       // of non-zero input weights for a given output.
-      CAFFE_CHECK_EQ(blob->num(), 1);
-      CAFFE_CHECK_EQ(blob->channels(), 1);
+      CHECK_EQ(blob->num(), 1);
+      CHECK_EQ(blob->channels(), 1);
       int num_inputs = blob->height();
       Dtype non_zero_probability = Dtype(sparse) / Dtype(num_inputs);
       rand_vec_.reset(new SyncedMemory(blob->count() * sizeof(int)));
@@ -101,12 +101,12 @@ class PositiveUnitballFiller : public Filler<Dtype> {
       : Filler<Dtype>(param) {}
   virtual void Fill(Blob<Dtype>* blob) {
     Dtype* data = blob->mutable_cpu_data();
-    CAFFE_DCHECK(blob->count());
+    DCHECK(blob->count());
     caffe_rng_uniform<Dtype>(blob->count(), 0, 1, blob->mutable_cpu_data());
     // We expect the filler to not be called very frequently, so we will
     // just use a simple implementation
     int dim = blob->count() / blob->num();
-    CAFFE_CHECK(dim);
+    CHECK(dim);
     for (int i = 0; i < blob->num(); ++i) {
       Dtype sum = 0;
       for (int j = 0; j < dim; ++j) {
@@ -116,8 +116,8 @@ class PositiveUnitballFiller : public Filler<Dtype> {
         data[i * dim + j] /= sum;
       }
     }
-    CAFFE_CHECK_EQ(this->filler_param_.sparse(), -1);
-        // << "Sparsity not supported by this Filler.";
+    CHECK_EQ(this->filler_param_.sparse(), -1)
+         << "Sparsity not supported by this Filler.";
   }
 };
 
@@ -135,13 +135,13 @@ class XavierFiller : public Filler<Dtype> {
   explicit XavierFiller(const FillerParameter& param)
       : Filler<Dtype>(param) {}
   virtual void Fill(Blob<Dtype>* blob) {
-    CAFFE_CHECK(blob->count());
+    CHECK(blob->count());
     int fan_in = blob->count() / blob->num();
     Dtype scale = sqrt(Dtype(3) / fan_in);
     caffe_rng_uniform<Dtype>(blob->count(), -scale, scale,
         blob->mutable_cpu_data());
-    CAFFE_CHECK_EQ(this->filler_param_.sparse(), -1);
-        // << "Sparsity not supported by this Filler.";
+    CHECK_EQ(this->filler_param_.sparse(), -1)
+         << "Sparsity not supported by this Filler.";
   }
 };
 
@@ -163,7 +163,7 @@ Filler<Dtype>* GetFiller(const FillerParameter& param) {
   } else if (type == "xavier") {
     return new XavierFiller<Dtype>(param);
   } else {
-    LOG(FATAL) << "Unknown filler name: " << param.type();
+    CHECK(false) << "Unknown filler name: " << param.type();
   }
   return (Filler<Dtype>*)(NULL);
 }

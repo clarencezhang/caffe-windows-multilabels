@@ -6,12 +6,11 @@
 // Usage:
 //    test_net net_proto pretrained_net_proto iterations [CPU/GPU]
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 #include <cstring>
 #include <cstdlib>
 #include <vector>
-#include <iostream>
 
 #include "caffe/caffe.hpp"
 
@@ -35,10 +34,10 @@ int main_test_net(int argc, char** argv) {
 		if (argc == 6) {
 			device_id = atoi(argv[5]);
 		}
-		//Caffe::SetDevice(device_id);
-		LOG(INFO) << "Using GPU #" << device_id;
+		Caffe::SetDevice(device_id);
+		LOG(ERROR) << "Using GPU #" << device_id;
 	} else {
-		LOG(INFO) << "Using CPU";
+		LOG(ERROR) << "Using CPU";
 		Caffe::set_mode(Caffe::CPU);
 	}
 
@@ -46,16 +45,16 @@ int main_test_net(int argc, char** argv) {
 	caffe_test_net.CopyTrainedLayersFrom(argv[2]);
 
 	int total_iter = atoi(argv[3]);
-	LOG(INFO) << "Running " << total_iter << " iterations.";
+	LOG(ERROR) << "Running " << total_iter << " iterations.";
 
 	double test_accuracy = 0;
 	for (int i = 0; i < total_iter; ++i) {
 		const vector<Blob<float>*>& result = caffe_test_net.ForwardPrefilled();
 		test_accuracy += result[0]->cpu_data()[0];
-		LOG(INFO) << "Batch " << i << ", accuracy: " << result[0]->cpu_data()[0];
+		LOG(ERROR) << "Batch " << i << ", accuracy: " << result[0]->cpu_data()[0];
 	}
 	test_accuracy /= total_iter;
-	LOG(INFO) << "Test accuracy: " << test_accuracy;
+	LOG(ERROR) << "Test accuracy: " << test_accuracy;
 
 	return 0;
 }

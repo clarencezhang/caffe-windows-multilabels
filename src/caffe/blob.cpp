@@ -1,15 +1,12 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
-//#include <cublas_v2.h>
-
-#include <iostream>
+#include <cuda_runtime.h>
+#include <cublas_v2.h>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/syncedmem.hpp"
 #include "caffe/util/math_functions.hpp"
-
 
 namespace caffe {
 
@@ -18,10 +15,10 @@ namespace caffe {
 template <typename Dtype>
 void Blob<Dtype>::Reshape(const int num, const int channels, const int height,
     const int width) {
-  CAFFE_CHECK_GE(num, 0);
-  CAFFE_CHECK_GE(channels, 0);
-  CAFFE_CHECK_GE(height, 0);
-  CAFFE_CHECK_GE(width, 0);
+  CHECK_GE(num, 0);
+  CHECK_GE(channels, 0);
+  CHECK_GE(height, 0);
+  CHECK_GE(width, 0);
   num_ = num;
   channels_ = channels;
   height_ = height;
@@ -51,67 +48,67 @@ Blob<Dtype>::Blob(const int num, const int channels, const int height,
 
 template <typename Dtype>
 const Dtype* Blob<Dtype>::cpu_data() const {
-  CAFFE_CHECK(data_);
+  CHECK(data_);
   return (const Dtype*)data_->cpu_data();
 }
 
 template <typename Dtype>
 void Blob<Dtype>::set_cpu_data(Dtype* data) {
-  CAFFE_CHECK(data);
+  CHECK(data);
   data_->set_cpu_data(data);
 }
 
 template <typename Dtype>
 const Dtype* Blob<Dtype>::gpu_data() const {
-  CAFFE_CHECK(data_);
+  CHECK(data_);
   return (const Dtype*)data_->gpu_data();
 }
 
 template <typename Dtype>
 const Dtype* Blob<Dtype>::cpu_diff() const {
-  CAFFE_CHECK(diff_);
+  CHECK(diff_);
   return (const Dtype*)diff_->cpu_data();
 }
 
 template <typename Dtype>
 const Dtype* Blob<Dtype>::gpu_diff() const {
-  CAFFE_CHECK(diff_);
+  CHECK(diff_);
   return (const Dtype*)diff_->gpu_data();
 }
 
 template <typename Dtype>
 Dtype* Blob<Dtype>::mutable_cpu_data() {
-  CAFFE_CHECK(data_);
+  CHECK(data_);
   return reinterpret_cast<Dtype*>(data_->mutable_cpu_data());
 }
 
 template <typename Dtype>
 Dtype* Blob<Dtype>::mutable_gpu_data() {
-  CAFFE_CHECK(data_);
+  CHECK(data_);
   return reinterpret_cast<Dtype*>(data_->mutable_gpu_data());
 }
 
 template <typename Dtype>
 Dtype* Blob<Dtype>::mutable_cpu_diff() {
-  CAFFE_CHECK(diff_);
+  CHECK(diff_);
   return reinterpret_cast<Dtype*>(diff_->mutable_cpu_data());
 }
 
 template <typename Dtype>
 Dtype* Blob<Dtype>::mutable_gpu_diff() {
-  CAFFE_CHECK(diff_);
+  CHECK(diff_);
   return reinterpret_cast<Dtype*>(diff_->mutable_gpu_data());
 }
 
 template <typename Dtype>
 void Blob<Dtype>::ShareData(const Blob& other) {
-  CAFFE_CHECK_EQ(count_, other.count());
+  CHECK_EQ(count_, other.count());
   data_ = other.data(); // 赋值操作共享other中的资源，并停止对原有资源的共享
 }
 
 template <typename Dtype>
 void Blob<Dtype>::ShareDiff(const Blob& other) {
-  CAFFE_CHECK_EQ(count_, other.count());
+  CHECK_EQ(count_, other.count());
   diff_ = other.diff(); // 赋值操作共享other中的资源，并停止对原有资源的共享
 }
 
@@ -130,9 +127,9 @@ void Blob<Dtype>::Update() {
   case SyncedMemory::HEAD_AT_GPU:
   case SyncedMemory::SYNCED:
     // perform computation on GPU
-    /*caffe_gpu_axpy<Dtype>(count_, Dtype(-1),
+    caffe_gpu_axpy<Dtype>(count_, Dtype(-1),
         reinterpret_cast<const Dtype*>(diff_->gpu_data()),
-        reinterpret_cast<Dtype*>(data_->mutable_gpu_data()));*/
+        reinterpret_cast<Dtype*>(data_->mutable_gpu_data()));
     break;
   default:
     LOG(FATAL) << "Syncedmem not initialized.";
@@ -152,14 +149,14 @@ void Blob<Dtype>::CopyFrom(const Blob& source, bool copy_diff, bool reshape) {
   }
   switch (Caffe::mode()) {
   case Caffe::GPU:
-    /*if (copy_diff) {
+    if (copy_diff) {
       CUDA_CHECK(cudaMemcpy(diff_->mutable_gpu_data(), source.gpu_diff(),
           sizeof(Dtype) * count_, cudaMemcpyDeviceToDevice));
     } else {
       CUDA_CHECK(cudaMemcpy(data_->mutable_gpu_data(), source.gpu_data(),
           sizeof(Dtype) * count_, cudaMemcpyDeviceToDevice));
     }
-    break;*/
+    break;
   case Caffe::CPU:
     if (copy_diff) {
       memcpy(diff_->mutable_cpu_data(), source.cpu_diff(),

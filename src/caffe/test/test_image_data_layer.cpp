@@ -1,6 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 #include <iostream>  // NOLINT(readability/streams)
 #include <fstream>  // NOLINT(readability/streams)

@@ -1,9 +1,8 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "gtest/gtest.h"
 #include "caffe/blob.hpp"

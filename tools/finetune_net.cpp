@@ -4,10 +4,9 @@
 // Usage:
 //    finetune_net solver_proto_file pretrained_net
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 #include <string>
-#include <iostream>
 
 #include "caffe/caffe.hpp"
 
@@ -16,7 +15,7 @@ using namespace caffe;  // NOLINT(build/namespaces)
 int main(int argc, char** argv) {
   ::google::InitGoogleLogging(argv[0]);
   if (argc != 3) {
-    LOG(INFO) << "Usage: finetune_net solver_proto_file pretrained_net";
+    LOG(ERROR) << "Usage: finetune_net solver_proto_file pretrained_net";
     return 1;
   }
 

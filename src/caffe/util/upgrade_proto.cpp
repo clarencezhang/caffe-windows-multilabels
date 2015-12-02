@@ -6,7 +6,6 @@
 
 #include <map>
 #include <string>
-#include <iostream>
 
 #include "caffe/common.hpp"
 #include "caffe/util/io.hpp"
@@ -89,14 +88,14 @@ namespace caffe {
 						// layer and takes only one input.  Also check that the padding layer
 						// input has only one input and one output.  Other cases have undefined
 						// behavior in Caffe.
-						CAFFE_CHECK_EQ(layer_param.type(), "conv"); // << "Padding layer input to "
-							// "non-convolutional layer type " << layer_param.type();
-						CAFFE_CHECK_EQ(layer_connection.bottom_size(), 1);
-							// << "Conv Layer takes a single blob as input.";
-						CAFFE_CHECK_EQ(source_layer.bottom_size(), 1);
-							// << "Padding Layer takes a single blob as input.";
-						CAFFE_CHECK_EQ(source_layer.top_size(), 1);
-							// << "Padding Layer produces a single blob as output.";
+						CHECK_EQ(layer_param.type(), "conv") << "Padding layer input to "
+							"non-convolutional layer type " << layer_param.type();
+						CHECK_EQ(layer_connection.bottom_size(), 1)
+							<< "Conv Layer takes a single blob as input.";
+						CHECK_EQ(source_layer.bottom_size(), 1)
+							<< "Padding Layer takes a single blob as input.";
+						CHECK_EQ(source_layer.top_size(), 1)
+							<< "Padding Layer produces a single blob as output.";
 						int layer_index = param_upgraded_pad->layers_size() - 1;
 						param_upgraded_pad->mutable_layers(layer_index)->mutable_layer()
 							->set_pad(source_layer.layer().pad());
@@ -541,8 +540,6 @@ namespace caffe {
 			return LayerParameter_LayerType_TANH;
 		} else if (type == "window_data") {
 			return LayerParameter_LayerType_WINDOW_DATA;
-		} else if (type == "absval") {
-			return LayerParameter_LayerType_ABSVAL;            
 		} else {
 			LOG(FATAL) << "Unknown layer name: " << type;
 			return LayerParameter_LayerType_NONE;
@@ -571,8 +568,8 @@ namespace caffe {
 	*/
 	void ReadNetParamsFromTextFileOrDie(const string& param_file,
 		NetParameter* param) {
-			CAFFE_CHECK(ReadProtoFromTextFile(param_file, param));
-				// << "Failed to parse NetParameter file: " << param_file;
+			CHECK(ReadProtoFromTextFile(param_file, param))
+				<< "Failed to parse NetParameter file: " << param_file;
 			if (NetNeedsUpgrade(*param)) {
 				// NetParameter was specified using the old style (V0LayerParameter); try to
 				// upgrade it.
@@ -594,8 +591,8 @@ namespace caffe {
 
 	void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
 		NetParameter* param) {
-			CAFFE_CHECK(ReadProtoFromBinaryFile(param_file, param));
-				// << "Failed to parse NetParameter file: " << param_file;
+			CHECK(ReadProtoFromBinaryFile(param_file, param))
+				<< "Failed to parse NetParameter file: " << param_file;
 			if (NetNeedsUpgrade(*param)) {
 				// NetParameter was specified using the old style (V0LayerParameter); try to
 				// upgrade it.

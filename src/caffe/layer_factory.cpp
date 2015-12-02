@@ -4,7 +4,6 @@
 #define CAFFE_LAYER_FACTORY_HPP_
 
 #include <string>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -81,8 +80,6 @@ Layer<Dtype>* GetLayer(const LayerParameter& param) {
     return new TanHLayer<Dtype>(param);
   case LayerParameter_LayerType_WINDOW_DATA:
     return new WindowDataLayer<Dtype>(param);
-  case LayerParameter_LayerType_ABSVAL:
-    return new AbsValLayer<Dtype>(param);    
   case LayerParameter_LayerType_NONE:
     LOG(FATAL) << "Layer " << name << " has unspecified type.";
   default:

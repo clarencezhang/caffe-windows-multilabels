@@ -1,12 +1,10 @@
 // Copyright 2014 BVLC and contributors.
 #include "caffe/common.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 
 #include "caffe/util/benchmark.hpp"
-
-#include <iostream>
 
 namespace caffe {
 
@@ -19,15 +17,15 @@ Timer::Timer()
 
 Timer::~Timer() {
   if (Caffe::mode() == Caffe::GPU) {
-    //CUDA_CHECK(cudaEventDestroy(start_gpu_));
-    //CUDA_CHECK(cudaEventDestroy(stop_gpu_));
+    CUDA_CHECK(cudaEventDestroy(start_gpu_));
+    CUDA_CHECK(cudaEventDestroy(stop_gpu_));
   }
 }
 
 void Timer::Start() {
   if (!running()) {
     if (Caffe::mode() == Caffe::GPU) {
-      //CUDA_CHECK(cudaEventRecord(start_gpu_, 0));
+      CUDA_CHECK(cudaEventRecord(start_gpu_, 0));
     } else {
       start_cpu_ = boost::posix_time::microsec_clock::local_time();
     }
@@ -39,8 +37,8 @@ void Timer::Start() {
 void Timer::Stop() {
   if (running()) {
     if (Caffe::mode() == Caffe::GPU) {
-      //CUDA_CHECK(cudaEventRecord(stop_gpu_, 0));
-      //CUDA_CHECK(cudaEventSynchronize(stop_gpu_));
+      CUDA_CHECK(cudaEventRecord(stop_gpu_, 0));
+      CUDA_CHECK(cudaEventSynchronize(stop_gpu_));
     } else {
       stop_cpu_ = boost::posix_time::microsec_clock::local_time();
     }
@@ -57,7 +55,8 @@ float Timer::MilliSeconds() {
     Stop();
   }
   if (Caffe::mode() == Caffe::GPU) {
-    //CUDA_CHECK(cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_, stop_gpu_));
+    CUDA_CHECK(cudaEventElapsedTime(&elapsed_milliseconds_, start_gpu_,
+                                    stop_gpu_));
   } else {
     elapsed_milliseconds_ = (stop_cpu_ - start_cpu_).total_milliseconds();
   }
@@ -71,8 +70,8 @@ float Timer::Seconds() {
 void Timer::Init() {
   if (!initted()) {
     if (Caffe::mode() == Caffe::GPU) {
-      //CUDA_CHECK(cudaEventCreate(&start_gpu_));
-      //CUDA_CHECK(cudaEventCreate(&stop_gpu_));
+      CUDA_CHECK(cudaEventCreate(&start_gpu_));
+      CUDA_CHECK(cudaEventCreate(&stop_gpu_));
     }
     initted_ = true;
   }

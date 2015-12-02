@@ -1,14 +1,12 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <stdio.h>  // for snprintf
-
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 #include <google/protobuf/text_format.h>
 #include <leveldb/db.h>
 #include <leveldb/write_batch.h>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
@@ -31,7 +29,7 @@ template<typename Dtype>
 int feature_extraction_pipeline(int argc, char** argv) {
   const int num_required_args = 6;
   if (argc < num_required_args) {
-    LOG(INFO)<<
+    LOG(ERROR)<<
     "This program takes in a trained network and an input data layer, and then"
     " extract features of the input data produced by the net.\n"
     "Usage: demo_extract_features  pretrained_net_param"
@@ -43,17 +41,17 @@ int feature_extraction_pipeline(int argc, char** argv) {
 
   arg_pos = num_required_args;
   if (argc > arg_pos && strcmp(argv[arg_pos], "GPU") == 0) {
-    LOG(INFO)<< "Using GPU";
+    LOG(ERROR)<< "Using GPU";
     uint device_id = 0;
     if (argc > arg_pos + 1) {
       device_id = atoi(argv[arg_pos + 1]);
-      CAFFE_CHECK_GE(device_id, 0);
+      CHECK_GE(device_id, 0);
     }
-    LOG(INFO) << "Using Device_id=" << device_id;
-    //Caffe::SetDevice(device_id);
+    LOG(ERROR) << "Using Device_id=" << device_id;
+    Caffe::SetDevice(device_id);
     Caffe::set_mode(Caffe::GPU);
   } else {
-    LOG(INFO) << "Using CPU";
+    LOG(ERROR) << "Using CPU";
     Caffe::set_mode(Caffe::CPU);
   }
   Caffe::set_phase(Caffe::TEST);
@@ -94,7 +92,7 @@ int feature_extraction_pipeline(int argc, char** argv) {
   feature_extraction_net->CopyTrainedLayersFrom(pretrained_binary_proto);
 
   string extract_feature_blob_name(argv[++arg_pos]);
-  CAFFE_CHECK(feature_extraction_net->has_blob(extract_feature_blob_name))
+  CHECK(feature_extraction_net->has_blob(extract_feature_blob_name))
       << "Unknown feature blob name " << extract_feature_blob_name
       << " in the network " << feature_extraction_proto;
 
@@ -108,11 +106,11 @@ int feature_extraction_pipeline(int argc, char** argv) {
   leveldb::Status status = leveldb::DB::Open(options,
                                              save_feature_leveldb_name.c_str(),
                                              &db);
-  CAFFE_CHECK(status.ok()) << "Failed to open leveldb " << save_feature_leveldb_name;
+  CHECK(status.ok()) << "Failed to open leveldb " << save_feature_leveldb_name;
 
   int num_mini_batches = atoi(argv[++arg_pos]);
 
-  LOG(INFO) << "Extacting Features";
+  LOG(ERROR)<< "Extacting Features";
 
   Datum datum;
   leveldb::WriteBatch* batch = new leveldb::WriteBatch();
@@ -146,7 +144,7 @@ int feature_extraction_pipeline(int argc, char** argv) {
       ++image_index;
       if (image_index % 1000 == 0) {
         db->Write(leveldb::WriteOptions(), batch);
-        LOG(INFO) << "Extracted features of " << image_index <<
+        LOG(ERROR)<< "Extracted features of " << image_index <<
             " query images.";
         delete batch;
         batch = new leveldb::WriteBatch();
@@ -156,13 +154,13 @@ int feature_extraction_pipeline(int argc, char** argv) {
   // write the last batch
   if (image_index % 1000 != 0) {
     db->Write(leveldb::WriteOptions(), batch);
-    LOG(INFO) << "Extracted features of " << image_index <<
+    LOG(ERROR)<< "Extracted features of " << image_index <<
         " query images.";
   }
 
   delete batch;
   delete db;
-  LOG(INFO) << "Successfully extracted the features!";
+  LOG(ERROR)<< "Successfully extracted the features!";
   return 0;
 }
 

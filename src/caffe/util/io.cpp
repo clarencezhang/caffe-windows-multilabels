@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include <fstream>  // NOLINT(readability/streams)
-#include <iostream>
 
 #include "opencvlib.h"
 #include "caffe/common.hpp"
@@ -36,8 +35,7 @@ namespace caffe {
 
 	bool ReadProtoFromTextFile(const char* filename, Message* proto) {
 		int fd = open(filename, O_RDONLY);
-		CAFFE_CHECK_NE(fd, -1);
-		//std::cout << std::endl << "File not found: " << filename;
+		CHECK_NE(fd, -1) << "File not found: " << filename;
 		FileInputStream* input = new FileInputStream(fd);
 		bool success = google::protobuf::TextFormat::Parse(input, proto);
 		delete input;
@@ -48,15 +46,14 @@ namespace caffe {
 	void WriteProtoToTextFile(const Message& proto, const char* filename) {
 		int fd = open(filename, O_WRONLY);
 		FileOutputStream* output = new FileOutputStream(fd);
-		CAFFE_CHECK(google::protobuf::TextFormat::Print(proto, output));
+		CHECK(google::protobuf::TextFormat::Print(proto, output));
 		delete output;
 		close(fd);
 	}
 
 	bool ReadProtoFromBinaryFile(const char* filename, Message* proto) {
 		int fd = open(filename, O_RDONLY | O_BINARY);
-		CAFFE_CHECK_NE(fd, -1);
-		//std::cout << std::endl << "File not found: " << filename;
+		CHECK_NE(fd, -1) << "File not found: " << filename;
 		ZeroCopyInputStream* raw_input = new FileInputStream(fd);
 		CodedInputStream* coded_input = new CodedInputStream(raw_input);
 		coded_input->SetTotalBytesLimit(1073741824, 536870912);
@@ -71,7 +68,7 @@ namespace caffe {
 
 	void WriteProtoToBinaryFile(const Message& proto, const char* filename) {
 		fstream output(filename, ios::out | ios::trunc | ios::binary);
-		CAFFE_CHECK(proto.SerializeToOstream(&output));
+		CHECK(proto.SerializeToOstream(&output));
 	}
 
 	bool ReadImageToDatum(const string& filename, const int label,
@@ -186,15 +183,15 @@ namespace caffe {
 	herr_t status;
 	int ndims;
 	status = H5LTget_dataset_ndims(file_id, dataset_name_, &ndims);
-	CAFFE_CHECK_GE(ndims, min_dim);
-	CAFFE_CHECK_LE(ndims, max_dim);
+	CHECK_GE(ndims, min_dim);
+	CHECK_LE(ndims, max_dim);
 
 	// Verify that the data format is what we expect: float or double.
 	std::vector<hsize_t> dims(ndims);
 	H5T_class_t class_;
 	status = H5LTget_dataset_info(
 	file_id, dataset_name_, dims.data(), &class_, NULL);
-	CAFFE_CHECK_EQ(class_, H5T_FLOAT) << "Expected float or double data";
+	CHECK_EQ(class_, H5T_FLOAT) << "Expected float or double data";
 
 	blob->Reshape(
 	dims[0],
@@ -229,7 +226,7 @@ namespace caffe {
 	dims[3] = blob.width();
 	herr_t status = H5LTmake_dataset_float(
 	file_id, dataset_name.c_str(), HDF5_NUM_DIMS, dims, blob.cpu_data());
-	CAFFE_CHECK_GE(status, 0) << "Failed to make float dataset " << dataset_name;
+	CHECK_GE(status, 0) << "Failed to make float dataset " << dataset_name;
 	}
 
 	template <>
@@ -242,7 +239,7 @@ namespace caffe {
 	dims[3] = blob.width();
 	herr_t status = H5LTmake_dataset_double(
 	file_id, dataset_name.c_str(), HDF5_NUM_DIMS, dims, blob.cpu_data());
-	CAFFE_CHECK_GE(status, 0) << "Failed to make double dataset " << dataset_name;
+	CHECK_GE(status, 0) << "Failed to make double dataset " << dataset_name;
 	}
 	*/
 }  // namespace caffe

@@ -4,7 +4,6 @@
 #include <set>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
@@ -44,8 +43,8 @@ namespace caffe {
 		set<string> available_blobs;
 		int num_layers = param.layers_size();
 		
-		CAFFE_CHECK_EQ(param.input_size() * 4, param.input_dim_size());
-		   // << "Incorrect bottom blob dimension specifications.";
+		CHECK_EQ(param.input_size() * 4, param.input_dim_size())
+			<< "Incorrect bottom blob dimension specifications.";
 		size_t memory_used = 0;
 		
 		// set the input blobs
@@ -90,7 +89,7 @@ namespace caffe {
 					LOG(FATAL) << "Unknown blob input " << blob_name <<
 						" to layer" << j;
 				}
-				LOG(INFO) << "[Layer] " << layer_param.name() << " <- " << blob_name;
+				LOG(INFO) << layer_param.name() << " <- " << blob_name;
 				bottom_vecs_[i].push_back(blobs_[blob_id].get());
 				bottom_id_vecs_[i].push_back(blob_id);
 				// If a blob needs backward, this layer should provide it.
@@ -106,7 +105,7 @@ namespace caffe {
 				if (layer_param.bottom_size() > j &&
 					blob_name == layer_param.bottom(j)) {
 						// In-place computation
-						LOG(INFO) << "[Layer] " << layer_param.name() << " -> " << blob_name << " (in-place)";
+						LOG(INFO) << layer_param.name() << " -> " << blob_name << " (in-place)";
 						in_place = true;
 						available_blobs.insert(blob_name);
 						top_vecs_[i].push_back(
@@ -118,7 +117,7 @@ namespace caffe {
 					LOG(FATAL) << "Duplicate blobs produced by multiple sources.";
 				} else {
 					// Normal output.
-					LOG(INFO) << "[Layer] " << layer_param.name() << " -> " << blob_name;
+					LOG(INFO) << layer_param.name() << " -> " << blob_name;
 					shared_ptr<Blob<Dtype> > blob_pointer(new Blob<Dtype>());
 					blobs_.push_back(blob_pointer);
 					blob_names_.push_back(blob_name);
@@ -146,9 +145,9 @@ namespace caffe {
 
 			// blobs: 0# weights, 1# bias term; blob_lr: 1# learning rate for weights, 2# learning rate for bias
 			int blobs_lr_size = layers_[i]->layer_param().blobs_lr_size();
-			CAFFE_CHECK(blobs_lr_size == layers_[i]->blobs().size() || blobs_lr_size == 0); // 0, 1, 2
-				// << "Incorrect blobs lr size: should be either 0 or the same as "
-				// "the number of the layer's parameter blobs.";
+			CHECK(blobs_lr_size == layers_[i]->blobs().size() || blobs_lr_size == 0) // 0, 1, 2
+				<< "Incorrect blobs lr size: should be either 0 or the same as "
+				"the number of the layer's parameter blobs.";
 			
 			if (blobs_lr_size) {
 				// Check if this layer needs backward operation itself
@@ -210,10 +209,10 @@ namespace caffe {
 			
 			// push the learning rate mutlipliers
 			if (layers_[i]->layer_param().blobs_lr_size()) {
-				CAFFE_CHECK_EQ(layers_[i]->layer_param().blobs_lr_size(), layer_blobs.size());
+				CHECK_EQ(layers_[i]->layer_param().blobs_lr_size(), layer_blobs.size());
 				for (int j = 0; j < layer_blobs.size(); ++j) {
 					float local_lr = layers_[i]->layer_param().blobs_lr(j);
-					CAFFE_CHECK_GE(local_lr, 0.);
+					CHECK_GE(local_lr, 0.);
 					params_lr_.push_back(local_lr);
 				}
 			} else {
@@ -224,10 +223,10 @@ namespace caffe {
 			
 			// push the weight decay multipliers
 			if (layers_[i]->layer_param().weight_decay_size()) {
-				CAFFE_CHECK_EQ(layers_[i]->layer_param().weight_decay_size(), layer_blobs.size());
+				CHECK_EQ(layers_[i]->layer_param().weight_decay_size(), layer_blobs.size());
 				for (int j = 0; j < layer_blobs.size(); ++j) {
 					float local_decay = layers_[i]->layer_param().weight_decay(j);
-					CAFFE_CHECK_GE(local_decay, 0.);
+					CHECK_GE(local_decay, 0.);
 					params_weight_decay_.push_back(local_decay);
 				}
 			} else {
@@ -274,8 +273,8 @@ namespace caffe {
 		// 解析序列化字符串，先解析成BlobProto,然后解析获取bottom Blob数据
 		if (net_input_blobs_.size()) {
 			blob_proto_vec.ParseFromString(input_blob_protos);
-			CAFFE_CHECK_EQ(blob_proto_vec.blobs_size(), net_input_blobs_.size());
-				// << "Incorrect input size.";
+			CHECK_EQ(blob_proto_vec.blobs_size(), net_input_blobs_.size())
+				<< "Incorrect input size.";
 			for (int i = 0; i < blob_proto_vec.blobs_size(); ++i) {
 				net_input_blobs_[i]->FromProto(blob_proto_vec.blobs(i));
 			}
@@ -331,15 +330,15 @@ namespace caffe {
 				layers_[target_layer_id]->blobs();
 			
 			// blob 0# weights, 1# bias term
-			CAFFE_CHECK_EQ(target_blobs.size(), source_layer->blobs().size());
-				// << "Incompatible number of blobs for layer " << source_layer_name;
+			CHECK_EQ(target_blobs.size(), source_layer->blobs().size())
+				<< "Incompatible number of blobs for layer " << source_layer_name;
 			
 			for (int j = 0; j < target_blobs.size(); ++j) {
 				Blob<Dtype>* source_blob = source_layer->blobs()[j].get();
-				CAFFE_CHECK_EQ(target_blobs[j]->num(), source_blob->num());
-				CAFFE_CHECK_EQ(target_blobs[j]->channels(), source_blob->channels());
-				CAFFE_CHECK_EQ(target_blobs[j]->height(), source_blob->height());
-				CAFFE_CHECK_EQ(target_blobs[j]->width(), source_blob->width());
+				CHECK_EQ(target_blobs[j]->num(), source_blob->num());
+				CHECK_EQ(target_blobs[j]->channels(), source_blob->channels());
+				CHECK_EQ(target_blobs[j]->height(), source_blob->height());
+				CHECK_EQ(target_blobs[j]->width(), source_blob->width());
 				target_blobs[j]->ShareData(*source_blob);
 			}
 		}
@@ -369,14 +368,14 @@ namespace caffe {
 				layers_[target_layer_id]->blobs();
 			
 			// blob 0# weights, 1# bias term
-			CAFFE_CHECK_EQ(target_blobs.size(), source_layer.blobs_size());
-				// << "Incompatible number of blobs for layer " << source_layer_name;
+			CHECK_EQ(target_blobs.size(), source_layer.blobs_size())
+				<< "Incompatible number of blobs for layer " << source_layer_name;
 			
 			for (int j = 0; j < target_blobs.size(); ++j) {
-				CAFFE_CHECK_EQ(target_blobs[j]->num(), source_layer.blobs(j).num());
-				CAFFE_CHECK_EQ(target_blobs[j]->channels(), source_layer.blobs(j).channels());
-				CAFFE_CHECK_EQ(target_blobs[j]->height(), source_layer.blobs(j).height());
-				CAFFE_CHECK_EQ(target_blobs[j]->width(), source_layer.blobs(j).width());
+				CHECK_EQ(target_blobs[j]->num(), source_layer.blobs(j).num());
+				CHECK_EQ(target_blobs[j]->channels(), source_layer.blobs(j).channels());
+				CHECK_EQ(target_blobs[j]->height(), source_layer.blobs(j).height());
+				CHECK_EQ(target_blobs[j]->width(), source_layer.blobs(j).width());
 				target_blobs[j]->FromProto(source_layer.blobs(j));
 			}
 		}

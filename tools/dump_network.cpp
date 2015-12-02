@@ -12,9 +12,8 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
 
-//#include "cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "fcntl.h"
 #include "google/protobuf/text_format.h"
 
@@ -52,10 +51,10 @@ int main(int argc, char** argv) {
 
   string output_prefix(argv[4]);
   // Run the network without training.
-  LOG(INFO) << "Performing Forward";
+  LOG(ERROR) << "Performing Forward";
   caffe_net->Forward(input_vec);
   if (argc > 5 && strcmp(argv[5], "1") == 0) {
-    LOG(INFO) << "Performing Backward";
+    LOG(ERROR) << "Performing Backward";
     Caffe::set_phase(Caffe::TRAIN);
     caffe_net->Backward();
     // Dump the network
@@ -70,7 +69,7 @@ int main(int argc, char** argv) {
   const vector<shared_ptr<Blob<float> > >& blobs = caffe_net->blobs();
   for (int blobid = 0; blobid < caffe_net->blobs().size(); ++blobid) {
     // Serialize blob
-    LOG(INFO) << "Dumping " << blob_names[blobid];
+    LOG(ERROR) << "Dumping " << blob_names[blobid];
     BlobProto output_blob_proto;
     blobs[blobid]->ToProto(&output_blob_proto);
     WriteProtoToBinaryFile(output_blob_proto,

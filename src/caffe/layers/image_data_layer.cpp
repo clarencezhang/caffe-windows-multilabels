@@ -24,12 +24,12 @@ namespace caffe {
 
 	template <typename Dtype>
 	void* ImageDataLayerPrefetch(void* layer_pointer) {
-		CAFFE_CHECK(layer_pointer);
+		CHECK(layer_pointer);
 		ImageDataLayer<Dtype>* layer =
 			reinterpret_cast<ImageDataLayer<Dtype>*>(layer_pointer);
-		CAFFE_CHECK(layer);
+		CHECK(layer);
 		Datum datum;
-		CAFFE_CHECK(layer->prefetch_data_);
+		CHECK(layer->prefetch_data_);
 		Dtype* top_data = layer->prefetch_data_->mutable_cpu_data();
 		Dtype* top_label = layer->prefetch_label_->mutable_cpu_data();
 		ImageDataParameter image_data_param = layer->layer_param_.image_data_param();
@@ -53,7 +53,7 @@ namespace caffe {
 		const Dtype* mean = layer->data_mean_.cpu_data();
 		for (int item_id = 0; item_id < batch_size; ++item_id) {
 			// get a blob
-			CAFFE_CHECK_GT(lines_size, layer->lines_id_);
+			CHECK_GT(lines_size, layer->lines_id_);
 			if (!ReadImageToDatum(layer->lines_[layer->lines_id_].first,
 				layer->lines_[layer->lines_id_].second,
 				new_height, new_width, &datum)) {
@@ -62,7 +62,7 @@ namespace caffe {
 			const string& data = datum.data();
 			
 			if (crop_size) {
-				CAFFE_CHECK(data.size()); // << "Image cropping only support uint8 data";
+				CHECK(data.size()) << "Image cropping only support uint8 data";
 				int h_off, w_off;
 				// We only do random crop when we do training.
 				if (layer->phase_ == Caffe::TRAIN) {
@@ -146,13 +146,13 @@ namespace caffe {
 	template <typename Dtype>
 	void ImageDataLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 0); // << "Input Layer takes no input blobs.";
-			CAFFE_CHECK_EQ(top->size(), 2); // << "Input Layer takes two blobs as output.";
+			CHECK_EQ(bottom.size(), 0) << "Input Layer takes no input blobs.";
+			CHECK_EQ(top->size(), 2) << "Input Layer takes two blobs as output.";
 			const int new_height  = this->layer_param_.image_data_param().new_height();
 			const int new_width  = this->layer_param_.image_data_param().new_height();
-			CAFFE_CHECK((new_height == 0 && new_width == 0) ||
-				(new_height > 0 && new_width > 0)); // << "Current implementation requires "
-				// "new_height and new_width to be set at the same time.";
+			CHECK((new_height == 0 && new_width == 0) ||
+				(new_height > 0 && new_width > 0)) << "Current implementation requires "
+				"new_height and new_width to be set at the same time.";
 			
 			// Read the file with filenames and labels
 			const string& source = this->layer_param_.image_data_param().source();
@@ -179,13 +179,13 @@ namespace caffe {
 				unsigned int skip = caffe_rng_rand() %
 					this->layer_param_.image_data_param().rand_skip();
 				LOG(INFO) << "Skipping first " << skip << " data points.";
-				CAFFE_CHECK_GT(lines_.size(), skip); // << "Not enough points to skip";
+				CHECK_GT(lines_.size(), skip) << "Not enough points to skip";
 				lines_id_ = skip;
 			}
 			
 			// Read a data point, and use it to initialize the top blob.
 			Datum datum;
-			CAFFE_CHECK(ReadImageToDatum(lines_[lines_id_].first, lines_[lines_id_].second,
+			CHECK(ReadImageToDatum(lines_[lines_id_].first, lines_[lines_id_].second,
 				new_height, new_width, &datum));
 			// image
 			const int crop_size = this->layer_param_.image_data_param().crop_size();
@@ -212,18 +212,18 @@ namespace caffe {
 			datum_height_ = datum.height();
 			datum_width_ = datum.width();
 			datum_size_ = datum.channels() * datum.height() * datum.width();
-			CAFFE_CHECK_GT(datum_height_, crop_size);
-			CAFFE_CHECK_GT(datum_width_, crop_size);
+			CHECK_GT(datum_height_, crop_size);
+			CHECK_GT(datum_width_, crop_size);
 			// check if we want to have mean
 			if (this->layer_param_.image_data_param().has_mean_file()) {
 				BlobProto blob_proto;
 				LOG(INFO) << "Loading mean file from" << mean_file;
 				ReadProtoFromBinaryFile(mean_file.c_str(), &blob_proto);
 				data_mean_.FromProto(blob_proto);
-				CAFFE_CHECK_EQ(data_mean_.num(), 1);
-				CAFFE_CHECK_EQ(data_mean_.channels(), datum_channels_);
-				CAFFE_CHECK_EQ(data_mean_.height(), datum_height_);
-				CAFFE_CHECK_EQ(data_mean_.width(), datum_width_);
+				CHECK_EQ(data_mean_.num(), 1);
+				CHECK_EQ(data_mean_.channels(), datum_channels_);
+				CHECK_EQ(data_mean_.height(), datum_height_);
+				CHECK_EQ(data_mean_.width(), datum_width_);
 			} else {
 				// Simply initialize an all-empty mean.
 				data_mean_.Reshape(1, datum_channels_, datum_height_, datum_width_);
@@ -255,7 +255,7 @@ namespace caffe {
 			prefetch_rng_.reset();
 		}
 		// Create the thread.
-		//CAFFE_CHECK(!pthread_create(&thread_, NULL, ImageDataLayerPrefetch<Dtype>,
+		//CHECK(!pthread_create(&thread_, NULL, ImageDataLayerPrefetch<Dtype>,
 		//      static_cast<void*>(this))) << "Pthread execution failed.";
 		thread_ = thread(ImageDataLayerPrefetch<Dtype>,reinterpret_cast<void*>(this));
 	}
@@ -274,7 +274,7 @@ namespace caffe {
 
 	template <typename Dtype>
 	void ImageDataLayer<Dtype>::JoinPrefetchThread() {
-		//CAFFE_CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
+		//CHECK(!pthread_join(thread_, NULL)) << "Pthread joining failed.";
 		thread_.join();
 	}
 

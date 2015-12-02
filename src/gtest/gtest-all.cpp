@@ -6426,13 +6426,13 @@ void DeathTestAbort(const String& message) {
   }
 }
 
-// A replacement for CAFFE_CHECK that calls DeathTestAbort if the assertion
+// A replacement for CHECK that calls DeathTestAbort if the assertion
 // fails.
 # define GTEST_DEATH_TEST_CHECK_(expression) \
   do { \
     if (!::testing::internal::IsTrue(expression)) { \
       DeathTestAbort(::testing::internal::String::Format( \
-          "CAFFE_CHECK failed: File %s, line %d: %s", \
+          "CHECK failed: File %s, line %d: %s", \
           __FILE__, __LINE__, #expression)); \
     } \
   } while (::testing::internal::AlwaysFalse())
@@ -6452,7 +6452,7 @@ void DeathTestAbort(const String& message) {
     } while (gtest_retval == -1 && errno == EINTR); \
     if (gtest_retval == -1) { \
       DeathTestAbort(::testing::internal::String::Format( \
-          "CAFFE_CHECK failed: File %s, line %d: %s != -1", \
+          "CHECK failed: File %s, line %d: %s != -1", \
           __FILE__, __LINE__, #expression)); \
     } \
   } while (::testing::internal::AlwaysFalse())
@@ -8265,13 +8265,13 @@ GTestLog::GTestLog(GTestLogSeverity severity, const char* file, int line)
       severity == GTEST_INFO ?    "[  INFO ]" :
       severity == GTEST_WARNING ? "[WARNING]" :
       severity == GTEST_ERROR ?   "[ ERROR ]" : "[ FATAL ]";
-  GetStream() << std::endl << marker << " "
+  GetStream() << ::std::endl << marker << " "
               << FormatFileLocation(file, line).c_str() << ": ";
 }
 
 // Flushes the buffers and, if severity is GTEST_FATAL, aborts the program.
 GTestLog::~GTestLog() {
-  GetStream() << std::endl;
+  GetStream() << ::std::endl;
   if (severity_ == GTEST_FATAL) {
     fflush(stderr);
     posix::Abort();

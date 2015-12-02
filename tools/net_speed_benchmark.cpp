@@ -1,6 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 #include <fcntl.h>
 #include <google/protobuf/text_format.h>
 
@@ -8,7 +8,6 @@
 #include <ctime>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
@@ -33,19 +32,19 @@ int main(int argc, char** argv) {
     total_iter = atoi(argv[2]);
   }
 
-  LOG(INFO) << "Testing for " << total_iter << "Iterations.";
+  LOG(ERROR) << "Testing for " << total_iter << "Iterations.";
 
   if (argc >= 4 && strcmp(argv[3], "GPU") == 0) {
-    LOG(INFO) << "Using GPU";
+    LOG(ERROR) << "Using GPU";
     uint device_id = 0;
     if (argc >= 5 && strcmp(argv[3], "GPU") == 0) {
       device_id = atoi(argv[4]);
     }
-    LOG(INFO) << "Using Device_id=" << device_id;
-    //Caffe::SetDevice(device_id);
+    LOG(ERROR) << "Using Device_id=" << device_id;
+    Caffe::SetDevice(device_id);
     Caffe::set_mode(Caffe::GPU);
   } else {
-    LOG(INFO) << "Using CPU";
+    LOG(ERROR) << "Using CPU";
     Caffe::set_mode(Caffe::CPU);
   }
 
@@ -53,19 +52,19 @@ int main(int argc, char** argv) {
   Net<float> caffe_net(argv[1]);
 
   // Run the network without training.
-  LOG(INFO) << "Performing Forward";
+  LOG(ERROR) << "Performing Forward";
   // Note that for the speed benchmark, we will assume that the network does
   // not take any input blobs.
   float initial_loss;
   caffe_net.Forward(vector<Blob<float>*>(), &initial_loss);
-  LOG(INFO) << "Initial loss: " << initial_loss;
-  LOG(INFO) << "Performing Backward";
+  LOG(ERROR) << "Initial loss: " << initial_loss;
+  LOG(ERROR) << "Performing Backward";
   caffe_net.Backward();
 
   const vector<shared_ptr<Layer<float> > >& layers = caffe_net.layers();
   vector<vector<Blob<float>*> >& bottom_vecs = caffe_net.bottom_vecs();
   vector<vector<Blob<float>*> >& top_vecs = caffe_net.top_vecs();
-  LOG(INFO) << "*** Benchmark begins ***";
+  LOG(ERROR) << "*** Benchmark begins ***";
   Timer total_timer;
   total_timer.Start();
   Timer forward_timer;
@@ -77,10 +76,10 @@ int main(int argc, char** argv) {
     for (int j = 0; j < total_iter; ++j) {
       layers[i]->Forward(bottom_vecs[i], &top_vecs[i]);
     }
-    LOG(INFO) << layername << "\tforward: " << timer.MilliSeconds() <<
+    LOG(ERROR) << layername << "\tforward: " << timer.MilliSeconds() <<
         " milli seconds.";
   }
-  LOG(INFO) << "Forward pass: " << forward_timer.MilliSeconds() <<
+  LOG(ERROR) << "Forward pass: " << forward_timer.MilliSeconds() <<
       " milli seconds.";
   Timer backward_timer;
   backward_timer.Start();
@@ -90,13 +89,13 @@ int main(int argc, char** argv) {
     for (int j = 0; j < total_iter; ++j) {
       layers[i]->Backward(top_vecs[i], true, &bottom_vecs[i]);
     }
-    LOG(INFO) << layername << "\tbackward: "
+    LOG(ERROR) << layername << "\tbackward: "
         << timer.MilliSeconds() << " milli seconds.";
   }
-  LOG(INFO) << "Backward pass: " << backward_timer.MilliSeconds() <<
+  LOG(ERROR) << "Backward pass: " << backward_timer.MilliSeconds() <<
       " milli seconds.";
-  LOG(INFO) << "Total Time: " << total_timer.MilliSeconds() <<
+  LOG(ERROR) << "Total Time: " << total_timer.MilliSeconds() <<
       " milli seconds.";
-  LOG(INFO) << "*** Benchmark ends ***";
+  LOG(ERROR) << "*** Benchmark ends ***";
   return 0;
 }

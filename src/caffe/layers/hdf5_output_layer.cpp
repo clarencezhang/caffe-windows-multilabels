@@ -1,7 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <vector>
-#include <iostream>
 
 #include "hdf5.h"
 #include "hdf5_hl.h"
@@ -22,21 +21,21 @@ HDF5OutputLayer<Dtype>::HDF5OutputLayer(const LayerParameter& param)
   /* create a HDF5 file */
   file_id_ = H5Fcreate(file_name_.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT,
                        H5P_DEFAULT);
-  CAFFE_CHECK_GE(file_id_, 0); // << "Failed to open HDF5 file" << file_name_;
+  CHECK_GE(file_id_, 0) << "Failed to open HDF5 file" << file_name_;
 }
 
 template <typename Dtype>
 HDF5OutputLayer<Dtype>::~HDF5OutputLayer<Dtype>() {
   herr_t status = H5Fclose(file_id_);
-  CAFFE_CHECK_GE(status, 0); // << "Failed to close HDF5 file " << file_name_;
+  CHECK_GE(status, 0) << "Failed to close HDF5 file " << file_name_;
 }
 
 template <typename Dtype>
 void HDF5OutputLayer<Dtype>::SaveBlobs() {
   // TODO: no limit on the number of blobs
   LOG(INFO) << "Saving HDF5 file" << file_name_;
-  CAFFE_CHECK_EQ(data_blob_.num(), label_blob_.num()); 
-      // "data blob and label blob must have the same batch size";
+  CHECK_EQ(data_blob_.num(), label_blob_.num()) <<
+      "data blob and label blob must have the same batch size";
   hdf5_save_nd_dataset(file_id_, HDF5_DATA_DATASET_NAME, data_blob_);
   hdf5_save_nd_dataset(file_id_, HDF5_DATA_LABEL_NAME, label_blob_);
   LOG(INFO) << "Successfully saved " << data_blob_.num() << " rows";
@@ -46,15 +45,15 @@ template <typename Dtype>
 void HDF5OutputLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
   // TODO: no limit on the number of blobs
-  CAFFE_CHECK_EQ(bottom.size(), 2); // << "HDF5OutputLayer takes two blobs as input.";
-  CAFFE_CHECK_EQ(top->size(), 0); // << "HDF5OutputLayer takes no output blobs.";
+  CHECK_EQ(bottom.size(), 2) << "HDF5OutputLayer takes two blobs as input.";
+  CHECK_EQ(top->size(), 0) << "HDF5OutputLayer takes no output blobs.";
 }
 
 template <typename Dtype>
 Dtype HDF5OutputLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_GE(bottom.size(), 2);
-  CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
+  CHECK_GE(bottom.size(), 2);
+  CHECK_EQ(bottom[0]->num(), bottom[1]->num());
   data_blob_.Reshape(bottom[0]->num(), bottom[0]->channels(),
                      bottom[0]->height(), bottom[0]->width());
   label_blob_.Reshape(bottom[1]->num(), bottom[1]->channels(),

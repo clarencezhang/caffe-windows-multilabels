@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cfloat>
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -17,15 +16,15 @@ namespace caffe {
 	template <typename Dtype>
 	void PoolingLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
-			CAFFE_CHECK_EQ(bottom.size(), 1);// << "PoolingLayer takes a single blob as input.";
-			CAFFE_CHECK_EQ(top->size(), 1);// << "PoolingLayer takes a single blob as output.";
+			CHECK_EQ(bottom.size(), 1) << "PoolingLayer takes a single blob as input.";
+			CHECK_EQ(top->size(), 1) << "PoolingLayer takes a single blob as output.";
 			kernel_size_ = this->layer_param_.pooling_param().kernel_size();//核大小 
 			stride_ = this->layer_param_.pooling_param().stride();//步长 
 			pad_ = this->layer_param_.pooling_param().pad();
 			if (pad_ != 0) {
-				CAFFE_CHECK_EQ(this->layer_param_.pooling_param().pool(),
-					PoolingParameter_PoolMethod_AVE);
-					// << "Padding implemented only for average pooling.";
+				CHECK_EQ(this->layer_param_.pooling_param().pool(),
+					PoolingParameter_PoolMethod_AVE)
+					<< "Padding implemented only for average pooling.";
 			}
 			channels_ = bottom[0]->channels();//通道 
 			height_ = bottom[0]->height();//高  

@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cfloat>
 #include <vector>
-#include <iostream>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
@@ -16,14 +15,14 @@ namespace caffe {
 template <typename Dtype>
 void SigmoidCrossEntropyLossLayer<Dtype>::SetUp(
     const vector<Blob<Dtype>*>& bottom, vector<Blob<Dtype>*>* top) {
-  CAFFE_CHECK_EQ(bottom.size(), 2); 
-      // "SigmoidCrossEntropyLoss Layer takes two blobs as input.";
-  CAFFE_CHECK_EQ(top->size(), 0);
-      // "SigmoidCrossEntropyLoss Layer takes no blob as output.";
-  CAFFE_CHECK_EQ(bottom[0]->count(), bottom[1]->count());
-      // "SigmoidCrossEntropyLoss Layer inputs must have same count.";
-  CAFFE_CHECK_EQ(bottom[0]->num(), bottom[1]->num());
-      // "SigmoidCrossEntropyLoss Layer inputs must have same num.";
+  CHECK_EQ(bottom.size(), 2) <<
+      "SigmoidCrossEntropyLoss Layer takes two blobs as input.";
+  CHECK_EQ(top->size(), 0) <<
+      "SigmoidCrossEntropyLoss Layer takes no blob as output.";
+  CHECK_EQ(bottom[0]->count(), bottom[1]->count()) <<
+      "SigmoidCrossEntropyLoss Layer inputs must have same count.";
+  CHECK_EQ(bottom[0]->num(), bottom[1]->num()) <<
+      "SigmoidCrossEntropyLoss Layer inputs must have same num.";
   sigmoid_bottom_vec_.clear();
   sigmoid_bottom_vec_.push_back(bottom[0]);
   sigmoid_top_vec_.clear();

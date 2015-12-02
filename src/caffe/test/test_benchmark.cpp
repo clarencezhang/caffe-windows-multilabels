@@ -1,7 +1,7 @@
 // Copyright 2014 BVLC and contributors.
 
 #include <unistd.h>  // for usleep
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 #include <gtest/gtest.h>
 
 #include "caffe/common.hpp"
@@ -105,14 +105,14 @@ TEST_F(BenchmarkTest, TestTimerStopGPU) {
 TEST_F(BenchmarkTest, TestTimerMilliSecondsCPU) {
   Caffe::set_mode(Caffe::CPU);
   Timer timer;
-  CAFFE_CHECK_EQ(timer.MilliSeconds(), 0);
+  CHECK_EQ(timer.MilliSeconds(), 0);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
   usleep(300 * 1000);
-  CAFFE_CHECK_GE(timer.MilliSeconds(), 298);
-  CAFFE_CHECK_LE(timer.MilliSeconds(), 302);
+  CHECK_GE(timer.MilliSeconds(), 298);
+  CHECK_LE(timer.MilliSeconds(), 302);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_TRUE(timer.has_run_at_least_once());
@@ -121,14 +121,14 @@ TEST_F(BenchmarkTest, TestTimerMilliSecondsCPU) {
 TEST_F(BenchmarkTest, TestTimerMilliSecondsGPU) {
   Caffe::set_mode(Caffe::GPU);
   Timer timer;
-  CAFFE_CHECK_EQ(timer.MilliSeconds(), 0);
+  CHECK_EQ(timer.MilliSeconds(), 0);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
   usleep(300 * 1000);
-  CAFFE_CHECK_GE(timer.MilliSeconds(), 298);
-  CAFFE_CHECK_LE(timer.MilliSeconds(), 302);
+  CHECK_GE(timer.MilliSeconds(), 298);
+  CHECK_LE(timer.MilliSeconds(), 302);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_TRUE(timer.has_run_at_least_once());
@@ -137,14 +137,14 @@ TEST_F(BenchmarkTest, TestTimerMilliSecondsGPU) {
 TEST_F(BenchmarkTest, TestTimerSecondsCPU) {
   Caffe::set_mode(Caffe::CPU);
   Timer timer;
-  CAFFE_CHECK_EQ(timer.Seconds(), 0);
+  CHECK_EQ(timer.Seconds(), 0);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
   usleep(300 * 1000);
-  CAFFE_CHECK_GE(timer.Seconds(), 0.298);
-  CAFFE_CHECK_LE(timer.Seconds(), 0.302);
+  CHECK_GE(timer.Seconds(), 0.298);
+  CHECK_LE(timer.Seconds(), 0.302);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_TRUE(timer.has_run_at_least_once());
@@ -153,14 +153,14 @@ TEST_F(BenchmarkTest, TestTimerSecondsCPU) {
 TEST_F(BenchmarkTest, TestTimerSecondsGPU) {
   Caffe::set_mode(Caffe::GPU);
   Timer timer;
-  CAFFE_CHECK_EQ(timer.Seconds(), 0);
+  CHECK_EQ(timer.Seconds(), 0);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
   usleep(300 * 1000);
-  CAFFE_CHECK_GE(timer.Seconds(), 0.298);
-  CAFFE_CHECK_LE(timer.Seconds(), 0.302);
+  CHECK_GE(timer.Seconds(), 0.298);
+  CHECK_LE(timer.Seconds(), 0.302);
   EXPECT_TRUE(timer.initted());
   EXPECT_FALSE(timer.running());
   EXPECT_TRUE(timer.has_run_at_least_once());

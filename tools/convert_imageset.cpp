@@ -19,7 +19,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <iostream>
 
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/io.hpp"
@@ -65,7 +64,7 @@ int main(int argc, char** argv) {
   options.write_buffer_size = 268435456;
   LOG(INFO) << "Opening leveldb " << argv[3];
   leveldb::Status status = leveldb::DB::Open(options, argv[3], &db);
-  CAFFE_CHECK(status.ok()) << "Failed to open leveldb " << argv[3];
+  CHECK(status.ok()) << "Failed to open leveldb " << argv[3];
 
   string root_folder(argv[1]);
   Datum datum;
@@ -92,7 +91,7 @@ int main(int argc, char** argv) {
     else 
     {
       const string& data = datum.data();
-      CAFFE_CHECK_EQ(data.size(), data_size) << "Incorrect data field size " << data.size();
+      CHECK_EQ(data.size(), data_size) << "Incorrect data field size " << data.size();
     }
     
     // sequential
@@ -104,7 +103,7 @@ int main(int argc, char** argv) {
     batch->Put(string(key_cstr), value);
     if (++count % 1000 == 0) {
       db->Write(leveldb::WriteOptions(), batch);
-      LOG(INFO) << "Processed " << count << " files.";
+      LOG(ERROR) << "Processed " << count << " files.";
       delete batch;
       batch = new leveldb::WriteBatch();
     }
@@ -113,7 +112,7 @@ int main(int argc, char** argv) {
   // write the last batch
   if (count % 1000 != 0) {
     db->Write(leveldb::WriteOptions(), batch);
-    LOG(INFO) << "Processed " << count << " files.";
+    LOG(ERROR) << "Processed " << count << " files.";
   }
 
   delete batch;

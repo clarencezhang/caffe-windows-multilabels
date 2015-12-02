@@ -1,6 +1,6 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 
 #include <cstring>
 
@@ -16,7 +16,7 @@ SyncedMemory::~SyncedMemory() {
   }
 
   if (gpu_ptr_) {
-    //CUDA_CHECK(cudaFree(gpu_ptr_));
+    CUDA_CHECK(cudaFree(gpu_ptr_));
 	gpu_ptr_ = NULL;
   }
 }
@@ -35,7 +35,7 @@ inline void SyncedMemory::to_cpu() {
       CaffeMallocHost(&cpu_ptr_, size_);
       own_cpu_data_ = true;
     }
-    //CUDA_CHECK(cudaMemcpy(cpu_ptr_, gpu_ptr_, size_, cudaMemcpyDeviceToHost));
+    CUDA_CHECK(cudaMemcpy(cpu_ptr_, gpu_ptr_, size_, cudaMemcpyDeviceToHost));
     head_ = SYNCED;
     break;
   case HEAD_AT_CPU:
@@ -46,7 +46,7 @@ inline void SyncedMemory::to_cpu() {
 
 // 把数据放到gpu上
 inline void SyncedMemory::to_gpu() {
-  /*switch (head_) {
+  switch (head_) {
   case UNINITIALIZED:
     CUDA_CHECK(cudaMalloc(&gpu_ptr_, size_));
     CUDA_CHECK(cudaMemset(gpu_ptr_, 0, size_));
@@ -62,7 +62,7 @@ inline void SyncedMemory::to_gpu() {
   case HEAD_AT_GPU:
   case SYNCED:
     break;
-  }*/
+  }
 }
 
 const void* SyncedMemory::cpu_data() {
@@ -71,7 +71,7 @@ const void* SyncedMemory::cpu_data() {
 }
 
 void SyncedMemory::set_cpu_data(void* data) {
-  CAFFE_CHECK(data);
+  CHECK(data);
   if (own_cpu_data_) {
     CaffeFreeHost(cpu_ptr_);
   }

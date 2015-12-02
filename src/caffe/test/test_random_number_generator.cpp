@@ -1,9 +1,8 @@
 // Copyright 2014 BVLC and contributors.
 
-//#include <cuda_runtime.h>
+#include <cuda_runtime.h>
 #include <cmath>
 #include <cstring>
-#include <iostream>
 
 #include "gtest/gtest.h"
 #include "caffe/common.hpp"
@@ -110,13 +109,13 @@ class RandomNumberGeneratorTest : public ::testing::Test {
   }
 
   void RngUniformFill(const Dtype lower, const Dtype upper, void* cpu_data) {
-    CAFFE_CHECK_GE(upper, lower);
+    CHECK_GE(upper, lower);
     Dtype* rng_data = static_cast<Dtype*>(cpu_data);
     caffe_rng_uniform(sample_size_, lower, upper, rng_data);
   }
 
   void RngUniformFillGPU(const Dtype lower, const Dtype upper, void* gpu_data) {
-    CAFFE_CHECK_GE(upper, lower);
+    CHECK_GE(upper, lower);
     Dtype* rng_data = static_cast<Dtype*>(gpu_data);
     caffe_gpu_rng_uniform(sample_size_, lower, upper, rng_data);
   }
